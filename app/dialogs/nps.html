@@ -1,0 +1,30 @@
+﻿<section class="popup-layout" data-bind="scrollbar: { checkDOMChanges: true }, keyDown: { 27: { handler: close } }">
+    <div class="popup nps-popup">
+        <span class="close-btn" data-bind="click: close"></span>
+        <div class="popup-wrapper">
+            <article class="without-note ">
+                <section class="popup-step" data-bind="visible: isRatingStepShown">
+                    <header>
+                        <h2>
+                            <span>Thank you for course finishing</span>
+                        </h2>
+                    </header>
+                    <section>
+                        <div class="nps-question-text">How likely are you recommended this course to a friend?</div>
+                        <div class="rating-control" data-bind="rating: { value: rating, max: 10, onValueUpdated: submit }"></div>
+                    </section>
+                </section>
+                <section class="popup-step" data-bind="visible: isThankYouStepShown">
+                    <header>
+                        <h2>
+                            <span>Thank you for your feedback!</span>
+                        </h2>
+                    </header>
+                    <section>
+                        <div>You can safely close browser tab now</div>
+                    </section>
+                </section>
+            </article>
+        </div>
+    </div>
+</section>

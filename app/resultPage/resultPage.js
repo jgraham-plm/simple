@@ -1,9 +1,9 @@
 define([
-    'repositories/courseRepository', 'templateSettings', 'plugins/router', 'progressContext', 
-    'userContext', 'xApi/xApiInitializer', 'includedModules/modulesInitializer', 
-    'windowOperations', 'constants', 'modules/progress/progressStorage/auth', 'modules/publishModeProvider'
-], function(courseRepository, templateSettings, router, progressContext, userContext, 
-    xApiInitializer, modulesInitializer, windowOperations, constants, auth, publishModeProvider) {
+    'repositories/courseRepository', 'templateSettings', 'plugins/router', 'progressContext',
+    'userContext', 'xApi/xApiInitializer', 'includedModules/modulesInitializer',
+    'windowOperations', 'constants', 'modules/progress/progressStorage/auth', 'modules/publishModeProvider', 'dialogs/dialog'
+], function (courseRepository, templateSettings, router, progressContext, userContext,
+    xApiInitializer, modulesInitializer, windowOperations, constants, auth, publishModeProvider, Dialog) {
     "use strict";
 
     var course = courseRepository.get();
@@ -15,7 +15,7 @@ define([
         sendingRequests: 'sendingRequests',
         finished: 'finished'
     };
-    
+
     var viewModel = {
         score: course.score,
         title: course.title,
@@ -26,7 +26,8 @@ define([
         activate: activate,
         close: close,
         finish: finish,
-        
+        npsDialog: new Dialog(),
+
         //properties
         crossDeviceEnabled: false,
         allowContentPagesScoring: false,
@@ -39,7 +40,7 @@ define([
     };
 
     return viewModel;
-    
+
     function activate() {
         viewModel.crossDeviceEnabled = templateSettings.allowCrossDeviceSaving;
         viewModel.allowContentPagesScoring = templateSettings.allowContentPagesScoring;
@@ -48,32 +49,61 @@ define([
 
         viewModel.stayLoggedIn(userContext.user.keepMeLoggedIn);
         viewModel.sections = _.chain(course.sections)
-            .filter(function(section){                
+            .filter(function (section) {
                 return section.affectProgress || section.hasSurveyQuestions;
             })
             .map(mapSection)
             .value();
+
+        onCourseFinished.bind(viewModel);
+        onCourseReportsSent.bind(viewModel);
     }
 
-    function close() {        
+    function close() {
         router.navigate("#sections");
-    } 
+    }
 
     function finish() {
-        if (router.isNavigationLocked() || viewModel.status() !== statuses.readyToFinish) {
-            return;
-        }
-        viewModel.status(statuses.sendingRequests);
-        progressContext.remove(function(){
-            course.finish(onCourseFinishedCallback.bind(viewModel, !viewModel.stayLoggedIn() ? auth.signout : function() {}));
+
+        //progressContext.remove(function () {
+        viewModel.npsDialog.show({
+            closed: function () {
+                signOut();
+                windowOperations.close();
+            },
+            reported: function () {
+                signOut();
+            }
         });
+        // });
+
+        //if (router.isNavigationLocked() || viewModel.status() !== statuses.readyToFinish) {
+        //    return;
+        //}
+        //viewModel.status(statuses.sendingRequests);
+        //progressContext.remove(function () {
+        //    course.finish(onCourseFinished);
+        //});
     }
 
-    function onCourseFinishedCallback(logOutCallback) {
-        viewModel.status(statuses.finished);
+    function signOut() {
+        if (auth.authenticated && !viewModel.stayLoggedIn())
+            auth.signout();
+    }
 
+    function onCourseFinished() {
+        viewModel.status(statuses.finished);
         progressContext.status(progressStatuses.ignored);
-        logOutCallback();
+
+        if (templateSettings.nps.enabled) {
+            //todo: update
+            //viewModel.npsDialog.show(onCourseReportsSent);
+            return;
+        }
+
+        if (!viewModel.stayLoggedIn())
+            auth.signout();
+
         windowOperations.close();
     }
 
@@ -82,30 +112,30 @@ define([
         auth.shortTermAccess = !userContext.user.keepMeLoggedIn;
     }
 
-    function mapSection(entity){
+    function mapSection(entity) {
         var section = {};
-        
+
         section.id = entity.id;
         section.title = entity.title;
-        section.score = entity.score();       
+        section.score = entity.score();
 
-        section.readedContents = _.filter(entity.questions, function(question) {
-                return !isQuestion(question) && question.isAnswered;
-            })
+        section.readedContents = _.filter(entity.questions, function (question) {
+            return !isQuestion(question) && question.isAnswered;
+        })
             .length;
 
-        section.questions = _.filter(entity.questions, function(question){
+        section.questions = _.filter(entity.questions, function (question) {
             return isQuestion(question);
         });
 
-        section.amountOfQuestions = _.filter(section.questions, function(question) {
-                return !question.isSurvey;
-            })
+        section.amountOfQuestions = _.filter(section.questions, function (question) {
+            return !question.isSurvey;
+        })
             .length;
 
-        section.correctQuestions = _.filter(section.questions, function(question) {
-                return question.isAnswered && question.isCorrectAnswered && !question.isSurvey;
-            })
+        section.correctQuestions = _.filter(section.questions, function (question) {
+            return question.isAnswered && question.isCorrectAnswered && !question.isSurvey;
+        })
             .length;
 
         section.amountOfContents = entity.questions.length - section.questions.length;

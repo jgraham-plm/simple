@@ -41,7 +41,8 @@ define([
     'viewmodels/questions/singleSelectImage/bindingHandlers/previewImageBinding',
     'widgets/imagePreview/bindingHandlers/fadeBindingHandler',
     'widgets/imagePreview/bindingHandlers/imageLoaderBindingHandler',
-    'dialogs/bindingHandlers/blockBodyScrollBinding'
+    'dialogs/bindingHandlers/blockBodyScrollBinding',
+    'dialogs/bindingHandlers/ratingBindingHandler'
 ], function () {
 
     return {
