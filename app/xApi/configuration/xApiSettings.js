@@ -11,6 +11,11 @@
                 password: ""
             },
 
+            anonymousActor: {
+                username: 'Anonymous',
+                email: 'anonymous@anonymous.com'
+            },
+
             xApi: {
                 allowedVerbs: []
             },
@@ -20,16 +25,14 @@
             defaultLanguage: "en-US",
             xApiVersion: "1.0.0",
 
-
-            init: init
+            initxApi: initxApi,
+            initNps: initNps
         };
 
-        var host = window.location.host;
-        var lrsHost = (host.indexOf('localhost') === 0 || host.indexOf('elearning-staging') === 0 || host.indexOf('elearning-branches') === 0) ? 'reports-staging.easygenerator.com' : 'reports.easygenerator.com';
-
+       
         var defaultXapi = {
             lrs: {
-                uri: '//' + lrsHost + '/xApi/statements',
+                uri: '//' + getxApiHost('reports-staging.easygenerator.com', 'reports.easygenerator.com') + '/xApi/statements',
                 authenticationRequired: false,
                 credentials: {
                     username: '',
@@ -39,16 +42,39 @@
             allowedVerbs: ['started', 'stopped', 'experienced', 'mastered', 'answered', 'passed', 'failed', 'progressed']
         };
 
+        var defaultNps = {
+            nps: {
+                //todo: update nps xapi host
+                uri: '//' + 'localhost:1337' + '/xApi/statements',
+                //uri: '//' + getxApiHost('nps-staging.easygenerator.com', 'nps.easygenerator.com') + '/xApi/statements',
+                authenticationRequired: false,
+                credentials: {
+                    username: '',
+                    password: ''
+                }
+            }
+        };
+
         return settings;
 
-        function init(templateSettings) {
-            return Q.fcall(function () {
-                $.extend(settings.xApi, templateSettings);
+        function initxApi(templateSettings) {
+            $.extend(settings.xApi, templateSettings);
 
-                if (templateSettings.selectedLrs == 'default') {
-                    $.extend(settings.xApi, defaultXapi);
-                }
-            });
+            if (templateSettings.selectedLrs == 'default') {
+                $.extend(settings.xApi, defaultXapi);
+            }
+        }
+
+        function initNps() {
+            $.extend(settings.xApi, defaultNps);
+        }
+
+        function getxApiHost(stagingEnvHost, liveEnvHost) {
+            var host = window.location.host;
+            var xApiHost = (host.indexOf('localhost') === 0 || host.indexOf('elearning-staging') === 0 || host.indexOf('elearning-branches') === 0) ?
+                stagingEnvHost : liveEnvHost;
+
+            return xApiHost;
         }
     }
 );

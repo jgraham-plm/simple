@@ -68,7 +68,7 @@ define([
 
             function initxApi() {
                 if (templateSettings.xApi.enabled) {
-                    return xApiInitializer.initialize(templateSettings.xApi);
+                    return xApiInitializer.initialize(templateSettings.xApi, templateSettings.nps);
                 }
             }
 
