@@ -1,5 +1,10 @@
-define(['./models/actor', './models/statement', './models/activity', './models/activityDefinition', 'eventManager', './errorsHandler', './configuration/xApiSettings', './constants', './models/result', './models/score', './models/context', './models/contextActivities', './models/languageMap', './models/interactionDefinition', './utils/dateTimeConverter', './statementQueue', 'constants', 'guard', 'repositories/sectionRepository', 'progressContext', 'context'],
-    function (actorModel, statementModel, activityModel, activityDefinitionModel, eventManager, errorsHandler, xApiSettings, constants, resultModel, scoreModel, contextModel, contextActivitiesModel, languageMapModel, interactionDefinitionModel, dateTimeConverter, statementQueue, globalConstants, guard, sectionRepository, progressContext, courseContext) {
+define(['./models/statement', './models/activity', './models/activityDefinition', 'eventManager', './errorsHandler', './configuration/xApiSettings',
+    './constants', './models/result', './models/score', './models/context', './models/contextActivities', './models/languageMap',
+    './models/interactionDefinition', './utils/dateTimeConverter', './statementQueue', 'constants', 'guard', 'repositories/sectionRepository', 'progressContext', 'context',
+    './statementSender', './models/actor'],
+    function (statementModel, activityModel, activityDefinitionModel, eventManager, errorsHandler, xApiSettings, constants,
+        resultModel, scoreModel, contextModel, contextActivitiesModel, languageMapModel, interactionDefinitionModel, dateTimeConverter, statementQueue,
+        globalConstants, guard, sectionRepository, progressContext, courseContext, statementSender, actorModel) {
 
         "use strict";
 
@@ -9,42 +14,63 @@ define(['./models/actor', './models/statement', './models/activity', './models/a
                 activityName: null,
                 activityUrl: null,
 
-                init: init,
-                createActor: createActor,
+                initActivity: initActivity,
+                initActor: initActor,
+                subscribeToxApiEvents: subscribeToxApiEvents,
+                turnOffxApiSubscriptions: unsubscribeFromxApiEvents,
+                subscribeToNpsEvents: subscribeToNpsEvents,
+                turnOffNpsSubscriptions: unsubscribeFromNpsEvents,
                 rootCourseUrl: null,
                 turnOffSubscriptions: turnOffSubscriptions,
                 courseId: null
             },
-            sessionId = null;
+            sessionId = function () {
+                return progressContext.get().attemptId;
+            };
 
         return activityProvider;
 
-        function init(courseId, actorData, activityName, activityUrl) {
+        function initActivity(courseId, activityName, activityUrl) {
             return Q.fcall(function () {
                 if (_.isUndefined(xApiSettings.scoresDistribution.positiveVerb)) {
                     throw errorsHandler.errors.notEnoughDataInSettings;
                 }
 
-                sessionId = function () {
-                    return progressContext.get().attemptId;
-                };
-
-                activityProvider.actor = actorData;
                 activityProvider.activityName = activityName;
                 activityProvider.activityUrl = activityUrl;
                 activityProvider.rootCourseUrl = activityUrl !== undefined ? activityUrl.split("?")[0].split("#")[0] : '';
                 activityProvider.courseId = courseId;
-                
-                eventManager.unsubscribeForEvent(eventManager.events.courseStarted, enqueueCourseStarted);
-                eventManager.unsubscribeForEvent(eventManager.events.courseFinished, enqueueCourseFinished);
-                eventManager.unsubscribeForEvent(eventManager.events.learningContentExperienced, enqueueLearningContentExperienced);
-                eventManager.unsubscribeForEvent(eventManager.events.answersSubmitted, enqueueQuestionAnsweredStatement);
-
-                subscriptions.push(eventManager.subscribeForEvent(eventManager.events.courseStarted).then(enqueueCourseStarted));
-                subscriptions.push(eventManager.subscribeForEvent(eventManager.events.courseFinished).then(enqueueCourseFinished));
-                subscriptions.push(eventManager.subscribeForEvent(eventManager.events.learningContentExperienced).then(enqueueLearningContentExperienced));
-                subscriptions.push(eventManager.subscribeForEvent(eventManager.events.answersSubmitted).then(enqueueQuestionAnsweredStatement));
             });
+        }
+
+        function initActor(name, email, account) {
+            return Q.fcall(function () {
+                activityProvider.actor = createActor(name, email, account);
+            });
+        }
+
+        function subscribeToxApiEvents() {
+            unsubscribeFromxApiEvents();
+
+            subscribeToEvent(eventManager.events.courseStarted, enqueueCourseStarted);
+            subscribeToEvent(eventManager.events.courseFinished, enqueueCourseFinished);
+            subscribeToEvent(eventManager.events.learningContentExperienced, enqueueLearningContentExperienced);
+            subscribeToEvent(eventManager.events.answersSubmitted, enqueueQuestionAnsweredStatement);
+        }
+
+        function unsubscribeFromxApiEvents() {
+            unsubscribeFromEvent(eventManager.events.courseStarted, enqueueCourseStarted);
+            unsubscribeFromEvent(eventManager.events.courseFinished, enqueueCourseFinished);
+            unsubscribeFromEvent(eventManager.events.learningContentExperienced, enqueueLearningContentExperienced);
+            unsubscribeFromEvent(eventManager.events.answersSubmitted, enqueueQuestionAnsweredStatement);
+        }
+
+        function subscribeToNpsEvents() {
+            subscribeToEvent(eventManager.events.courseEvaluated, handleCourseEvaluated);
+        }
+
+        function unsubscribeFromNpsEvents() {
+            unsubscribeFromEvent(eventManager.events.courseEvaluated, handleCourseEvaluated);
         }
 
         function turnOffSubscriptions() {
@@ -55,10 +81,19 @@ define(['./models/actor', './models/statement', './models/activity', './models/a
             });
         }
 
-        function pushStatementIfSupported(statement) {
-            if (_.contains(xApiSettings.xApi.allowedVerbs, statement.verb.display[xApiSettings.defaultLanguage])) {
-                statementQueue.enqueue(statement);
-            }
+        // #region Event handlers
+
+        function handleCourseEvaluated(data) {
+            guard.throwIfNotAnObject(data, 'Data is not an object');
+            guard.throwIfNotString(data.response, 'Data response is not a string');
+            guard.throwIfNotNumber(data.score, 'Data score is not a number');
+
+            var statement = createStatement(constants.verbs.evaluated,
+                                            new resultModel({ score: new scoreModel(data.score), response: data.response }),
+                                            createActivity(null, activityProvider.activityName, constants.activityTypes.course),
+                                            createContextModel());
+
+            return statementSender.sendNpsStatement(statement);
         }
 
         function enqueueCourseStarted() {
@@ -207,11 +242,15 @@ define(['./models/actor', './models/statement', './models/activity', './models/a
             }
         }
 
+        // #endregion
+
+        // #region Statement creation
+
         function getSelectTextQuestionActivityAndResult(question) {
             return {
                 result: new resultModel({
                     score: new scoreModel(question.score() / 100),
-                    response: getItemsIds(question.answers, function(item) {
+                    response: getItemsIds(question.answers, function (item) {
                         return item.isChecked;
                     }).join("[,]")
                 }),
@@ -221,7 +260,7 @@ define(['./models/actor', './models/statement', './models/activity', './models/a
                         name: new languageMapModel(question.title),
                         interactionType: constants.interactionTypes.choice,
                         correctResponsesPattern: !!question.isSurvey ? [] : [
-                            getItemsIds(question.answers, function(item) {
+                            getItemsIds(question.answers, function (item) {
                                 return item.isCorrect;
                             }).join("[,]")
                         ],
@@ -466,16 +505,6 @@ define(['./models/actor', './models/statement', './models/activity', './models/a
             };
         }
 
-        function getItemsIds(items, filter) {
-            return _.chain(items)
-               .filter(function (item) {
-                   return filter(item);
-               })
-               .map(function (item) {
-                   return item.id;
-               }).value();
-        }
-
         function getLearningContentExperiencedStatement(question, spentTime) {
             guard.throwIfNotAnObject(question, 'Question is not an object');
             guard.throwIfNotNumber(spentTime, 'SpentTime is not a number');
@@ -501,6 +530,33 @@ define(['./models/actor', './models/statement', './models/activity', './models/a
 
             return createStatement(constants.verbs.experienced, result, object, context);
         }
+
+        function createContextModel(contextSpec) {
+            contextSpec = contextSpec || {};
+            var contextExtensions = contextSpec.extensions || {};
+            contextExtensions[constants.extenstionKeys.courseId] = activityProvider.courseId;
+            contextSpec.extensions = contextExtensions;
+            contextSpec.registration = sessionId();
+
+            return new contextModel(contextSpec);
+        }
+
+        function createStatement(verb, result, activity, context) {
+            var activityData = activity || createActivity(null, activityProvider.activityName);
+            context = context || createContextModel();
+
+            return statementModel({
+                actor: activityProvider.actor,
+                verb: verb,
+                object: activityData,
+                result: result,
+                context: context
+            });
+        }
+
+        // #endregion
+
+        // #region Utilities
 
         function createActor(name, email, account) {
             var actor = {};
@@ -528,27 +584,32 @@ define(['./models/actor', './models/statement', './models/activity', './models/a
             });
         }
 
-        function createContextModel(contextSpec) {
-            contextSpec = contextSpec || {};
-            var contextExtensions = contextSpec.extensions || {};
-            contextExtensions[constants.extenstionKeys.courseId] = activityProvider.courseId;
-            contextSpec.extensions = contextExtensions;
-            contextSpec.registration = sessionId();
 
-            return new contextModel(contextSpec);
+        function pushStatementIfSupported(statement) {
+            if (_.contains(xApiSettings.xApi.allowedVerbs, statement.verb.display[xApiSettings.defaultLanguage])) {
+                statementQueue.enqueue(statement);
+            }
         }
 
-        function createStatement(verb, result, activity, context) {
-            var activityData = activity || createActivity(null, activityProvider.activityName);
-            context = context || createContextModel();
-
-            return statementModel({
-                actor: activityProvider.actor,
-                verb: verb,
-                object: activityData,
-                result: result,
-                context: context
-            });
+        function subscribeToEvent(eventName, eventHandler) {
+            subscriptions.push(eventManager.subscribeForEvent(eventName).then(eventHandler));
         }
+
+        function unsubscribeFromEvent(eventName, eventHandler) {
+            eventManager.unsubscribeForEvent(eventName, eventHandler);
+        }
+
+        function getItemsIds(items, filter) {
+            return _.chain(items)
+               .filter(function (item) {
+                   return filter(item);
+               })
+               .map(function (item) {
+                   return item.id;
+               }).value();
+        }
+
+        // #endregion
+
     }
 );

@@ -1,67 +1,115 @@
-﻿define(['durandal/app', 'plugins/router', './routingManager', './requestManager', './activityProvider', './configuration/xApiSettings', './constants', './statementQueueHandler', './errorsHandler', 'context', 'progressContext', 'userContext', 'eventManager'],
-    function (app, router, routingManager, requestManager, activityProvider, xApiSettings, constants, statementQueueHandler, errorsHandler, context, progressContext, userContext, eventManager) {
+﻿define(['durandal/app', 'plugins/router', './routingManager', './requestManager', './activityProvider', './configuration/xApiSettings', './constants', './statementQueueHandler',
+    './errorsHandler', 'context', 'progressContext', 'userContext', 'eventManager'],
+    function (app, router, routingManager, requestManager, activityProvider, xApiSettings, constants, statementQueueHandler, errorsHandler, context, progressContext,
+        userContext, eventManager) {
         "use strict";
 
         var
-            isInitialized = false,
-            moduleSettings = null,
+            npsEnabled = false,
+            xApiEnabled = false,
+            isRequestManagerInitialized = false,
 
             xApiInitializer = {
-                isActivated: isActivated,
+                initialize: initialize,
                 activate: activate,
                 deactivate: deactivate,
-
-                initialize: initialize,
+                deactivateLrsReporting: deactivateLrsReporting,
+                isLrsReportingInitialized: false,
+                isNpsReportingInitialized: false,
             };
 
         return xApiInitializer;
 
-        function isActivated() {
-            return isInitialized;
-        }
-
         function deactivate() {
             activityProvider.turnOffSubscriptions();
-            isInitialized = false;
+            xApiInitializer.isLrsReportingInitialized = false;
+            xApiInitializer.isNpsReportingInitialized = false;
+            app.trigger('user:authentication-skipped');
+        }
+
+        function deactivateLrsReporting() {
+            activityProvider.turnOffxApiSubscriptions();
+            xApiInitializer.isLrsReportingInitialized = false;
             app.trigger('user:authentication-skipped');
         }
 
         //Initialization function for moduleManager
-        function initialize(settings) {
+        function initialize(xApiReportingSettings, npsReportingSettings) {
             return Q.fcall(function () {
-                moduleSettings = settings;
+                xApiEnabled = xApiReportingSettings.enabled;
+                npsEnabled = npsReportingSettings.enabled;
+                if (!xApiEnabled && !npsEnabled)
+                    return;
 
-                return xApiSettings.init(moduleSettings).then(function () {
-                    var user = userContext.getCurrentUser(),
-                        progress = progressContext.get;
+                if (xApiEnabled) {
+                    xApiSettings.initxApi(xApiReportingSettings);
+                    activityProvider.subscribeToxApiEvents();
+                }
 
-                    routingManager.mapRoutes();
-                    
-                    if (user && user.username && (constants.patterns.email.test(user.email) || user.account)) {
-                        var isCourseStarted = _.isObject(progress()) && _.isObject(progress().user);
-                        return activate(user.username, user.email, user.account).then(function () {
-                            if (!isCourseStarted) {
-                                return eventManager.courseStarted();
-                            }
+                if (npsEnabled) {
+                    xApiSettings.initNps(npsReportingSettings);
+                    activityProvider.subscribeToNpsEvents();
+                }
+
+                initializeActivity();
+
+                var user = userContext.getCurrentUser(),
+                        progress = progressContext.get();
+
+                routingManager.mapRoutes();
+
+                if (user && user.username && (constants.patterns.email.test(user.email) || user.account)) {
+                    return activate(user.username, user.email, user.account).then(function () {
+                        var isCourseStarted = _.isObject(progress) && _.isObject(progress.user);
+                        if (!isCourseStarted) {
+                            return eventManager.courseStarted();
+                        }
+                    });
+                }
+
+                if (_.isObject(progress)) {
+                    if (_.isObject(progress.user)) {
+                        return activate(progress.user.username, progress.user.email, progress.user.account);
+                    }
+                    if (progress.user === 0) {
+                        activityProvider.turnOffxApiSubscriptions();
+                        app.trigger('user:authentication-skipped');
+                        return;
+                    }
+                }
+
+                if (npsEnabled) {
+                    return initializeRequestManager().then(function () {
+                        return initializeActor(xApiSettings.anonymousActor.username, xApiSettings.anonymousActor.email).then(function () {
+                            xApiInitializer.isNpsReportingInitialized = true;
                         });
-                    }
-
-                    if (_.isObject(progress())) {
-                        if (_.isObject(progress().user)) {
-                            return activate(progress().user.username, progress().user.email, progress().user.account);
-                        }
-                        if (progress().user === 0) {
-                            deactivate();
-                            return;
-                        }
-                    }
-                });
+                    });
+                }
             });
         }
 
         function activate(username, email, account) {
-            var actor = activityProvider.createActor(username, email, account);
+            return initializeRequestManager().then(function () {
+                return initializeActor(username, email, account).then(function () {
+                    if (xApiEnabled)
+                        xApiInitializer.isLrsReportingInitialized = true;
 
+                    if (npsEnabled)
+                        xApiInitializer.isNpsReportingInitialized = true;
+
+                    var user = {
+                        username: username,
+                        email: email || account.name
+                    };
+                    if (account) {
+                        user.account = account;
+                    }
+                    app.trigger('user:authenticated', user);
+                });
+            });
+        }
+
+        function initializeActivity() {
             var id = context.course.id;
             var title = context.course.title;
 
@@ -74,24 +122,25 @@
 
             url = url + '?course_id=' + context.course.id;
 
-            return Q.all([
-                  requestManager.init(moduleSettings),
-                  activityProvider.init(id, actor, title, url)
-            ]).spread(function () {
-                isInitialized = true;
+
+            activityProvider.initActivity(id, title, url);
+        }
+
+        function initializeActor(username, email, account) {
+            return activityProvider.initActor(username, email, account);
+        }
+
+        function initializeRequestManager() {
+            if (isRequestManagerInitialized)
+                return Q.fcall(function () { });
+
+            return requestManager.init().then(function() {
+                isRequestManagerInitialized = true;
                 statementQueueHandler.handle();
-                var user = {
-                    username: username,
-                    email: email || account.name
-                };
-                if(account) {
-                    user.account = account;
-                }
-                app.trigger('user:authenticated', user);
-            }).fail(function (reason) {
+            }).fail(function() {
                 xApiInitializer.deactivate();
                 errorsHandler.handleError(reason);
-            });;
+            });
         }
     }
 );

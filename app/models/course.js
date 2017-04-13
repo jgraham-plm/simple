@@ -50,12 +50,17 @@
             course.finish = function (callback) {
                 course.isFinished = true;
                 eventManager.courseFinished(course, function () {
-                    eventManager.courseFinalized(function() {
-                        eventManager.turnAllEventsOff();
+                    eventManager.courseFinalized(function () {
+                        //todo: check
+                        //eventManager.turnAllEventsOff();
                         callback();
                     });
                 });
             };
+
+            course.evaluate = function (score, callbacks) {
+                eventManager.courseEvaluated(score, callbacks);
+            }
 
             return course;
         };

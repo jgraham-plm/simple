@@ -3,7 +3,7 @@
         <span class="close-btn" data-bind="click: close"></span>
         <div class="popup-wrapper">
             <article class="without-note ">
-                <section class="popup-step" data-bind="visible: isRatingStepShown">
+                <section class="popup-step" data-bind="visible: isScoreStepShown">
                     <header>
                         <h2>
                             <span>Thank you for course finishing</span>
@@ -11,7 +11,10 @@
                     </header>
                     <section>
                         <div class="nps-question-text">How likely are you recommended this course to a friend?</div>
-                        <div class="rating-control" data-bind="rating: { value: rating, max: 10, onValueUpdated: submit }"></div>
+                        <div class="rating-control" data-bind="rating: { value: score, max: 10, onValueUpdated: submit }"></div>
+                        <div data-bind="visible: isReporting">
+                            is reporting...
+                        </div>
                     </section>
                 </section>
                 <section class="popup-step" data-bind="visible: isThankYouStepShown">

@@ -57,7 +57,7 @@
     function activate(type) {
         viewModel.score = context.course.score;
         viewModel.type(type);
-        viewModel.xAPIEnabled = xApiInitializer.isActivated();
+        viewModel.xAPIEnabled = xApiInitializer.isLrsReportingInitialized;
         viewModel.scormEnabled = publishModeProvider.isScormEnabled;
         viewModel.hideFinishActionButtons = templateSettings.hideFinishActionButtons;
     }

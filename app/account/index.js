@@ -1,7 +1,7 @@
-define(['plugins/router', 'routing/routes', 'templateSettings', 'publishSettings', 'includedModules/modulesInitializer',
-        './limitAccess/accessLimiter', './routing/guardRoute', './routing/routes', 'xApi/xApiInitializer', 'modules/progress/progressStorage/auth', 'modules/publishModeProvider'
+define(['plugins/router', 'routing/routes', 'templateSettings', 'publishSettings',
+        './limitAccess/accessLimiter', './routing/guardRoute', './routing/routes', 'modules/progress/progressStorage/auth', 'modules/publishModeProvider'
     ],
-    function (router, mainRoutes, templateSettings, publishSettings, modulesInitializer, accessLimiter, guardRoute, routes, xApiInitializer, auth, publishModeProvider) {
+    function (router, mainRoutes, templateSettings, publishSettings, accessLimiter, guardRoute, routes, auth, publishModeProvider) {
         'use strict';
 
         return {

@@ -42,9 +42,11 @@ define([
     return viewModel;
 
     function activate() {
+        viewModel.npsDialog.isVisible(false);
         viewModel.crossDeviceEnabled = templateSettings.allowCrossDeviceSaving;
         viewModel.allowContentPagesScoring = templateSettings.allowContentPagesScoring;
-        viewModel.xAPIEnabled = xApiInitializer.isActivated();
+
+        viewModel.xAPIEnabled = xApiInitializer.isLrsReportingInitialized;
         viewModel.scormEnabled = publishModeProvider.isScormEnabled;
 
         viewModel.stayLoggedIn(userContext.user.keepMeLoggedIn);
@@ -54,9 +56,6 @@ define([
             })
             .map(mapSection)
             .value();
-
-        onCourseFinished.bind(viewModel);
-        onCourseReportsSent.bind(viewModel);
     }
 
     function close() {
@@ -64,26 +63,13 @@ define([
     }
 
     function finish() {
-
-        //progressContext.remove(function () {
-        viewModel.npsDialog.show({
-            closed: function () {
-                signOut();
-                windowOperations.close();
-            },
-            reported: function () {
-                signOut();
-            }
+        if (router.isNavigationLocked() || viewModel.status() !== statuses.readyToFinish) {
+            return;
+        }
+        viewModel.status(statuses.sendingRequests);
+        progressContext.remove(function () {
+            course.finish(onCourseFinished);
         });
-        // });
-
-        //if (router.isNavigationLocked() || viewModel.status() !== statuses.readyToFinish) {
-        //    return;
-        //}
-        //viewModel.status(statuses.sendingRequests);
-        //progressContext.remove(function () {
-        //    course.finish(onCourseFinished);
-        //});
     }
 
     function signOut() {
@@ -96,8 +82,16 @@ define([
         progressContext.status(progressStatuses.ignored);
 
         if (templateSettings.nps.enabled) {
-            //todo: update
-            //viewModel.npsDialog.show(onCourseReportsSent);
+            viewModel.npsDialog.show({
+                closed: function () {
+                    signOut();
+                    windowOperations.close();
+                },
+                finalized: function () {
+                    signOut();
+                }
+            });
+
             return;
         }
 

@@ -1,23 +1,26 @@
-﻿define([],
-    function () {
+﻿define(['repositories/courseRepository'],
+    function (courseRepository) {
         var steps = {
-            rating: 'rating',
+            score: 'score',
             thankYou: 'thankYou'
         };
+
+        var course = courseRepository.get();
 
         var viewModel = {
             activate: activate,
             submit: submit,
-            rating: ko.observable(),
+            score: ko.observable(),
             currentStep: ko.observable(),
-            callbacks: {}
+            callbacks: {},
+            isReporting: ko.observable(false)
         };
 
-        viewModel.isRatingStepShown = ko.computed(function(){
-            return viewModel.currentStep() === steps.rating;
+        viewModel.isScoreStepShown = ko.computed(function () {
+            return viewModel.currentStep() === steps.score;
         });
 
-        viewModel.isThankYouStepShown = ko.computed(function(){
+        viewModel.isThankYouStepShown = ko.computed(function () {
             return viewModel.currentStep() === steps.thankYou;
         });
 
@@ -31,15 +34,33 @@
             if (data.callbacks)
                 viewModel.callbacks = data.callbacks;
 
-            viewModel.rating(1);
-            viewModel.currentStep(steps.rating);
+            viewModel.score(1);
+            viewModel.currentStep(steps.score);
         }
 
         function submit() {
-            viewModel.currentStep(steps.thankYou);
+            viewModel.isReporting(true);
 
-            if (_.isFunction(viewModel.callbacks.reported)){
-                viewModel.callbacks.reported();
-            }
+            course.evaluate(
+                {
+                    score: viewModel.score() / 10,
+                    response: ''
+                },
+                {
+                    success: function() {
+                        viewModel.isReporting(false);
+                        viewModel.currentStep(steps.thankYou);
+                    },
+                    fail: function(reason) {
+                        viewModel.isReporting(false);
+                        alert('Nps fail((( ' + reason);
+                    },
+                    fin: function () {
+                        if (_.isFunction(viewModel.callbacks.finalized)) {
+                            viewModel.callbacks.finalized();
+                        }
+                    }
+                }
+            );
         }
     });
