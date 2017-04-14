@@ -1,6 +1,6 @@
 define(['knockout', 'plugins/router', 'context', 'userContext', '../header/index', '../helpers/validatedValue', 'templateSettings',
         'modules/progress/progressStorage/auth', 'xApi/xApiInitializer', 'modules/progress/index', 'progressContext', 'eventManager'
-    ],
+],
     function (ko, router, context, userContext, Header, validatedValue, templateSettings, auth,
         xApiInitializer, progressProvider, progressContext, eventManager) {
         'use strict';
@@ -42,14 +42,14 @@ define(['knockout', 'plugins/router', 'context', 'userContext', '../header/index
         }
 
         function toggleRememberMe() {
-            if(viewmodel.requestProcessing()){
+            if (viewmodel.requestProcessing()) {
                 return;
             }
             viewmodel.rememberMe(userContext.user.keepMeLoggedIn = !viewmodel.rememberMe());
         }
 
         function submit() {
-            if(viewmodel.requestProcessing()){
+            if (viewmodel.requestProcessing()) {
                 return;
             }
             if (!viewmodel.password.isValid()) {
@@ -62,7 +62,7 @@ define(['knockout', 'plugins/router', 'context', 'userContext', '../header/index
                     userContext.user.password,
                     userContext.user.keepMeLoggedIn)
                 .then(function (response) {
-                    return progressProvider.initProgressStorage(function(provider){
+                    return progressProvider.initProgressStorage(function (provider) {
                         progressProvider.clearLocalStorage();
                         progressContext.use(provider);
                         return xApiInit(function () {
@@ -85,36 +85,36 @@ define(['knockout', 'plugins/router', 'context', 'userContext', '../header/index
         }
 
         function xApiInit(callback) {
-            if (templateSettings.xApi.enabled) {
-                return xApiInitializer.activate(userContext.user.username, userContext.user.email).then(callback);
+            if (xApiInitializer.isInitialized()) {
+                return xApiInitializer.activateActor(userContext.user).then(callback);
             }
             callback();
         }
 
-        function sendSecretLink(){
-            if(viewmodel.requestProcessing() || viewmodel.isSecretLinkSent()){
+        function sendSecretLink() {
+            if (viewmodel.requestProcessing() || viewmodel.isSecretLinkSent()) {
                 return;
             }
-            auth.sendSecreLink(userContext.user.email, context.course.title).then(function(){
+            auth.sendSecreLink(userContext.user.email, context.course.title).then(function () {
                 viewmodel.isRestorePasswordEmailSent(false);
                 viewmodel.isSecretLinkSent(true);
                 toggleValueAfterSomeTime(viewmodel.isSecretLinkSent, 5000);
             });
         }
 
-        function forgotPassword(){
-            if(viewmodel.requestProcessing() || viewmodel.isRestorePasswordEmailSent()){
+        function forgotPassword() {
+            if (viewmodel.requestProcessing() || viewmodel.isRestorePasswordEmailSent()) {
                 return;
             }
-            auth.forgotpassword(userContext.user.email).then(function(){
+            auth.forgotpassword(userContext.user.email).then(function () {
                 viewmodel.isSecretLinkSent(false);
                 viewmodel.isRestorePasswordEmailSent(true);
                 toggleValueAfterSomeTime(viewmodel.isRestorePasswordEmailSent, 5000);
             });
         }
 
-        function toggleValueAfterSomeTime(value, time){
-            _.delay(function(){
+        function toggleValueAfterSomeTime(value, time) {
+            _.delay(function () {
                 value(!value());
             }, time);
         }

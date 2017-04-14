@@ -81,7 +81,7 @@ define([
         viewModel.status(statuses.finished);
         progressContext.status(progressStatuses.ignored);
 
-        if (templateSettings.nps.enabled) {
+        if (templateSettings.nps.enabled && xApiInitializer.isNpsReportingInitialized) {
             viewModel.npsDialog.show({
                 closed: function () {
                     signOut();
