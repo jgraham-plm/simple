@@ -119,9 +119,8 @@ define(['knockout', 'plugins/router', 'context', 'userContext', '../header/index
         }
 
         function xApiInit(callback) {
-            if (templateSettings.xApi.enabled) {
-
-                return xApiInitializer.activate(userContext.user.username, userContext.user.email).then(callback);
+            if (xApiInitializer.isInitialized()) {
+                return xApiInitializer.activateActor(userContext.user).then(callback);
             }
             callback();
         }

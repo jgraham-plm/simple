@@ -7,24 +7,25 @@
         var
             npsEnabled = false,
             xApiEnabled = false,
-            isRequestManagerInitialized = false,
 
             xApiInitializer = {
                 initialize: initialize,
-                activate: activate,
                 deactivate: deactivate,
                 deactivateLrsReporting: deactivateLrsReporting,
                 isLrsReportingInitialized: false,
                 isNpsReportingInitialized: false,
+                isInitialized: isInitialized
             };
 
         return xApiInitializer;
 
+        function isInitialized() {
+            return xApiInitializer.isLrsReportingInitialized || xApiInitializer.isNpsReportingInitialized;
+        }
+
         function deactivate() {
-            activityProvider.turnOffSubscriptions();
-            xApiInitializer.isLrsReportingInitialized = false;
-            xApiInitializer.isNpsReportingInitialized = false;
-            app.trigger('user:authentication-skipped');
+            deactivateLrsReporting();
+            deactivateNpsReporting();
         }
 
         function deactivateLrsReporting() {
@@ -33,33 +34,62 @@
             app.trigger('user:authentication-skipped');
         }
 
+        function deactivateNpsReporting() {
+            activityProvider.turnOffNpsSubscriptions();
+            xApiInitializer.isNpsReportingInitialized = false;
+        }
+
         //Initialization function for moduleManager
         function initialize(xApiReportingSettings, npsReportingSettings) {
             return Q.fcall(function () {
                 xApiEnabled = xApiReportingSettings.enabled;
                 npsEnabled = npsReportingSettings.enabled;
+
                 if (!xApiEnabled && !npsEnabled)
                     return;
 
-                if (xApiEnabled) {
-                    xApiSettings.initxApi(xApiReportingSettings);
-                    activityProvider.subscribeToxApiEvents();
-                }
+                return initializeTracking()
+                    .then(function () {
+                        if (xApiEnabled) {
+                            xApiSettings.initxApi(xApiReportingSettings);
+                            activityProvider.subscribeToxApiEvents();
+                            routingManager.mapRoutes();
 
-                if (npsEnabled) {
-                    xApiSettings.initNps(npsReportingSettings);
-                    activityProvider.subscribeToNpsEvents();
-                }
+                            statementQueueHandler.handle();
+                            xApiInitializer.isLrsReportingInitialized = true;
+                        }
 
+                        if (npsEnabled) {
+                            xApiSettings.initNps(npsReportingSettings);
+                            activityProvider.subscribeToNpsEvents();
+
+                            xApiInitializer.isNpsReportingInitialized = true;
+                        }
+                    })
+                    .fail(function () {
+                        if (xApiEnabled)
+                            errorsHandler.handleError(reason);
+                    });
+            });
+        }
+
+        function initializeTracking() {
+            return initializeActorFromContext().then(function () {
                 initializeActivity();
 
-                var user = userContext.getCurrentUser(),
-                        progress = progressContext.get();
+                return requestManager.init().fail(function () {
+                    deactivate();
+                });
+            });
+        }
 
-                routingManager.mapRoutes();
+        function initializeActorFromContext() {
+            return Q.fcall(function () {
+                var user = userContext.getCurrentUser(),
+                         progress = progressContext.get();
 
                 if (user && user.username && (constants.patterns.email.test(user.email) || user.account)) {
-                    return activate(user.username, user.email, user.account).then(function () {
+                    return initializeActor(user).then(function () {
                         var isCourseStarted = _.isObject(progress) && _.isObject(progress.user);
                         if (!isCourseStarted) {
                             return eventManager.courseStarted();
@@ -69,44 +99,36 @@
 
                 if (_.isObject(progress)) {
                     if (_.isObject(progress.user)) {
-                        return activate(progress.user.username, progress.user.email, progress.user.account);
+                        return initializeActor(progress.user);
                     }
                     if (progress.user === 0) {
-                        activityProvider.turnOffxApiSubscriptions();
-                        app.trigger('user:authentication-skipped');
+                        deactivateLrsReporting();
                         return;
                     }
                 }
 
                 if (npsEnabled) {
-                    return initializeRequestManager().then(function () {
-                        return initializeActor(xApiSettings.anonymousActor.username, xApiSettings.anonymousActor.email).then(function () {
-                            xApiInitializer.isNpsReportingInitialized = true;
-                        });
-                    });
+                    return initializeActor();
                 }
             });
         }
 
-        function activate(username, email, account) {
-            return initializeRequestManager().then(function () {
-                return initializeActor(username, email, account).then(function () {
-                    if (xApiEnabled)
-                        xApiInitializer.isLrsReportingInitialized = true;
+        function initializeActor(user) {
+            var actor = {
+                username: xApiSettings.anonymousActor.username,
+                email: xApiSettings.anonymousActor.email
+            };
 
-                    if (npsEnabled)
-                        xApiInitializer.isNpsReportingInitialized = true;
+            if (user) {
+                actor.username = user.username;
+                actor.email = user.email || (user.account ? user.account.name : '');
+                if (user.account)
+                    actor.account = user.account;
 
-                    var user = {
-                        username: username,
-                        email: email || account.name
-                    };
-                    if (account) {
-                        user.account = account;
-                    }
-                    app.trigger('user:authenticated', user);
-                });
-            });
+                app.trigger('user:authenticated', user);
+            }
+
+            return activityProvider.initActor(actor.username, actor.email, actor.account);
         }
 
         function initializeActivity() {
@@ -124,23 +146,6 @@
 
 
             activityProvider.initActivity(id, title, url);
-        }
-
-        function initializeActor(username, email, account) {
-            return activityProvider.initActor(username, email, account);
-        }
-
-        function initializeRequestManager() {
-            if (isRequestManagerInitialized)
-                return Q.fcall(function () { });
-
-            return requestManager.init().then(function() {
-                isRequestManagerInitialized = true;
-                statementQueueHandler.handle();
-            }).fail(function() {
-                xApiInitializer.deactivate();
-                errorsHandler.handleError(reason);
-            });
         }
     }
 );

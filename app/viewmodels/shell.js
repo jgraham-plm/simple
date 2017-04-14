@@ -67,9 +67,7 @@ define([
                 .then(initRouter);
 
             function initxApi() {
-                if (templateSettings.xApi.enabled) {
-                    return xApiInitializer.initialize(templateSettings.xApi, templateSettings.nps);
-                }
+                return xApiInitializer.initialize(templateSettings.xApi, templateSettings.nps);
             }
 
             function initializeProgressProvider() {

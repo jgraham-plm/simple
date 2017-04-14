@@ -13,7 +13,8 @@
             score: ko.observable(),
             currentStep: ko.observable(),
             callbacks: {},
-            isReporting: ko.observable(false)
+            isReporting: ko.observable(false),
+            resultMessage: ko.observable()
         };
 
         viewModel.isScoreStepShown = ko.computed(function () {
@@ -34,6 +35,7 @@
             if (data.callbacks)
                 viewModel.callbacks = data.callbacks;
 
+            viewModel.isReporting(false);
             viewModel.score(1);
             viewModel.currentStep(steps.score);
         }
@@ -48,14 +50,14 @@
                 },
                 {
                     success: function() {
-                        viewModel.isReporting(false);
-                        viewModel.currentStep(steps.thankYou);
+                        viewModel.resultMessage('Thank you for your feedback!');
                     },
                     fail: function(reason) {
-                        viewModel.isReporting(false);
-                        alert('Nps fail((( ' + reason);
+                        viewModel.resultMessage('Nps fail((( ' + reason);
                     },
                     fin: function () {
+                        viewModel.isReporting(false);
+                        viewModel.currentStep(steps.thankYou);
                         if (_.isFunction(viewModel.callbacks.finalized)) {
                             viewModel.callbacks.finalized();
                         }

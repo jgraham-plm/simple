@@ -1,17 +1,45 @@
 ﻿define(['./configuration/xApiSettings', './base64', './errorsHandler'],
     function (xApiSettings, base64, errorsHandler) {
 
+        var states = {
+            notInitialized: 0,
+            initialized: 1,
+            initializationFailed: 2
+        };
+
+        var state = states.notInitialized;
+
         var eventManager = {
-            requestQueue: [],
             init: init,
-            sendStatement: sendStatement,
+            sendStatement: sendStatement
         };
         return eventManager;
 
         function init() {
-            return Q.fcall(function () {
-                initXDomainRequestTransport();
-            });
+            var dfd = Q.defer();
+            switch (state) {
+                case states.notInitialized:
+                    var initPromise = Q.fcall(function () {
+                        try {
+                            initXDomainRequestTransport();
+                            state = states.initialized;
+                        } catch (e) {
+                            state = states.initializationFailed;
+                            throw e;
+                        };
+                    });
+
+                    dfd.resolve(initPromise);
+                    break;
+                case states.initialized:
+                    dfd.resolve();
+                    break;
+                case states.initializationFailed:
+                    dfd.reject();
+                    break;
+            }
+
+            return dfd.promise;
         }
 
         function sendStatement(statement, uri, username, password) {
