@@ -44,9 +44,7 @@
 
         var defaultNps = {
             nps: {
-                //todo: update nps xapi host
-                uri: '//' + 'localhost:1337' + '/xApi/statements',
-                //uri: '//' + getxApiHost('nps-staging.easygenerator.com', 'nps.easygenerator.com') + '/xApi/statements',
+                uri: '//' + getxApiHost('nps-staging.easygenerator.com', 'nps.easygenerator.com') + '/xApi/statements',
                 authenticationRequired: false,
                 credentials: {
                     username: '',
