@@ -1,23 +1,8 @@
-define([], function() {
+define(['publishSettings'], function(publishSettings) {
     'use strict';
 
     function UrlProvider() {
-        this.progressStorageUrl = (function(){
-            var devProgressStorageUrl = '//progress-storage-staging.easygenerator.com/';
-            var liveProgressStorageUrl = '//progress-storage.easygenerator.com/';
-            
-            if (useDevProgressService()){
-                return devProgressStorageUrl;
-            }
-            
-            return liveProgressStorageUrl;
-            
-            function useDevProgressService(){
-                var host = window.location.host;
-                var pathname = window.location.pathname;
-                return host.indexOf('localhost') === 0 || host.indexOf('elearning-staging') === 0 || host.indexOf('elearning-branches') === 0;
-            }            
-        })();
+        this.progressStorageUrl = '//' + publishSettings.progressStorageUrl + '/' || '//progress-storage.easygenerator.com/';
         
         this.courseLink = (function(){
             return window.location.protocol+ '//' + window.location.host + window.location.pathname;
