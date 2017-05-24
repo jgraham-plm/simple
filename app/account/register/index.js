@@ -71,7 +71,7 @@ define(['knockout', 'plugins/router', 'context', 'userContext', '../header/index
                 userContext.user.password = viewmodel.password();
                 register();
             } else {
-                xApiInit(function () {
+                activateXapi(function () {
                     eventManager.courseStarted();
                     router.navigate('');
                 });
@@ -104,7 +104,7 @@ define(['knockout', 'plugins/router', 'context', 'userContext', '../header/index
                     return progressProvider.initProgressStorage(function(provider){
                         progressProvider.clearLocalStorage();
                         progressContext.use(provider);
-                        return xApiInit(function () {
+                        return activateXapi(function () {
                             viewmodel.requestProcessing(false);
                             progressContext.restoreProgress();
                             eventManager.courseStarted();
@@ -118,7 +118,8 @@ define(['knockout', 'plugins/router', 'context', 'userContext', '../header/index
                 });
         }
 
-        function xApiInit(callback) {
+        function activateXapi(callback) {
+            debugger;
             if (xApiInitializer.isInitialized()) {
                 return xApiInitializer.activate(userContext.user).then(callback);
             }

@@ -65,7 +65,7 @@ define(['knockout', 'plugins/router', 'context', 'userContext', '../header/index
                     return progressProvider.initProgressStorage(function (provider) {
                         progressProvider.clearLocalStorage();
                         progressContext.use(provider);
-                        return xApiInit(function () {
+                        return activateXapi(function () {
                             viewmodel.requestProcessing(false);
                             eventManager.courseStarted();
                             progressContext.restoreProgress();
@@ -84,7 +84,8 @@ define(['knockout', 'plugins/router', 'context', 'userContext', '../header/index
             viewmodel.password.hasFocus(true);
         }
 
-        function xApiInit(callback) {
+        function activateXapi(callback) {
+            debugger;
             if (xApiInitializer.isInitialized()) {
                 return xApiInitializer.activate(userContext.user).then(callback);
             }

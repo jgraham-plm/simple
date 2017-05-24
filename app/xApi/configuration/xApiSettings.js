@@ -32,7 +32,9 @@
        
         var defaultXapi = {
             lrs: {
-                uri: '//' + getxApiHost('reports-staging.easygenerator.com', 'reports.easygenerator.com') + '/xApi/statements',
+                 // todo: change it back 
+                uri: '//' + getxApiHost('test1.easygenerator.com', 'test1.easygenerator.com') + '/xApi/statements',
+                // uri: '//' + getxApiHost('reports-staging.easygenerator.com', 'reports.easygenerator.com') + '/xApi/statements',
                 authenticationRequired: false,
                 credentials: {
                     username: '',
