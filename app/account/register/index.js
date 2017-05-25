@@ -119,7 +119,6 @@ define(['knockout', 'plugins/router', 'context', 'userContext', '../header/index
         }
 
         function activateXapi(callback) {
-            debugger;
             if (xApiInitializer.isInitialized()) {
                 return xApiInitializer.activate(userContext.user).then(callback);
             }
