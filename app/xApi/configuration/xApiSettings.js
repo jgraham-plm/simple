@@ -30,7 +30,7 @@
         };
 
 
-        var lrsHost = publishSettings.defaultLRSUrl || 'test1.easygenerator.com';
+        var lrsHost = publishSettings.defaultLRSUrl || 'reports.easygenerator.com';
 
         var defaultXapi = {
             lrs: {
@@ -44,7 +44,7 @@
             allowedVerbs: ['started', 'stopped', 'experienced', 'mastered', 'answered', 'passed', 'failed', 'progressed']
         };
 
-        var npsHost = publishSettings.defaultNPSUrl || 'nps-staging.easygenerator.com';
+        var npsHost = publishSettings.defaultNpsUrl || 'nps.easygenerator.com';
 
         var defaultNps = {
             nps: {
