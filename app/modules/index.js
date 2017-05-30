@@ -1,4 +1,4 @@
-define(['./lessProcessor', './webFontLoaderProvider'], function(lessProcessor, webFontLoader){
+define(function(){
     'use strict';
 
     return {
@@ -8,8 +8,8 @@ define(['./lessProcessor', './webFontLoaderProvider'], function(lessProcessor, w
     function init(templateSettings, manifest, publishSettings){
         var promises = [];
 
-        promises.push(webFontLoader.init(templateSettings.fonts, manifest, publishSettings));
-        promises.push(lessProcessor.init(templateSettings.colors, templateSettings.fonts));
+        window.WebFontLoader && promises.push(window.WebFontLoader.load(templateSettings.fonts, manifest, publishSettings));
+        window.LessProcessor && promises.push(window.LessProcessor.load(templateSettings.colors, templateSettings.fonts));
 
         return Q.all(promises);
     }

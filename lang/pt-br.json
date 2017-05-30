@@ -156,5 +156,15 @@
     "[login page title]": "Login",
     "[limited access page title]": "Acesso limitado",
     "[sign in page title]": "Fazer login",
-    "[register page title]": "Registrar"
+    "[register page title]": "Registrar",
+    "[you have finished the course]": "Você terminou o curso",
+    "[rate your overall experience]": "Como você classificaria sua experiência global em realizar esse curso?",
+    "[poor]": "Fraca",
+    "[excellent]": "Excelente",
+    "[answer anonymously]": "Responder anonimamente",
+    "[progress has been reported]": "O progresso foi reportado com êxito",
+    "[thank you for your feedback]": "Obrigado pelo seu comentário!",
+    "[close course hint]": "Já pode fechar esta guia do navegador em segurança",
+    "[you gave a rate of]": "Você deu uma classificação de",
+    "[course reason]": "Qual a razão mais importante para sua classificação?"
 }

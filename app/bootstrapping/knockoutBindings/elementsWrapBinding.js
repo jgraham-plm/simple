@@ -1,4 +1,4 @@
-﻿define(['knockout', 'jquery', 'durandal/composition', 'modules/lessProcessor'], function (ko, $, composition, lessProcessor) {
+﻿define(['knockout', 'jquery', 'durandal/composition'], function (ko, $, composition) {
 
     ko.bindingHandlers.elementsWrap = {
         init: function (element) {
@@ -49,7 +49,7 @@
     composition.addBindingHandler('elementsWrap');
 
     function getStyles() {
-        return lessProcessor.vars ? JSON.stringify({ '@main-color': lessProcessor.vars['@main-color'], '@content-body-color': lessProcessor.vars['@content-body-color'], '@text-color': lessProcessor.vars['@text-color'] }) : undefined;
+        return window.LessProcessor && window.LessProcessor.vars ? JSON.stringify({ '@main-color': window.LessProcessor.vars['@main-color'], '@content-body-color': window.LessProcessor.vars['@content-body-color'], '@text-color': window.LessProcessor.vars['@text-color'] }) : undefined;
     }
 
 });

@@ -1227,6 +1227,11 @@ body {
 
 .blockout {
 
+    &.active {
+        visibility: visible;
+        background-color: fade(@content-body-color, 90%);
+    }
+
     .blockout-text {
         background-color: fade(@main-color, 20%);
         color: fade(@text-color, 80%);

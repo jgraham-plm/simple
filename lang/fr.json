@@ -156,5 +156,15 @@
     "[login page title]": "Connexion",
     "[limited access page title]": "Accès limité",
     "[sign in page title]": "Se connecter",
-    "[register page title]": "S'inscrire"
+    "[register page title]": "S'inscrire",
+    "[you have finished the course]": "Vous avez terminé ce cours",
+    "[rate your overall experience]": "Comment évalueriez-vous votre expérience globale tout au long de ce cours ?",
+    "[poor]": "Non satisfaisante",
+    "[excellent]": "Très satisfaisante",
+    "[answer anonymously]": "Répondre en mode anonyme",
+    "[progress has been reported]": "Les progrès ont bien été enregistrés",
+    "[thank you for your feedback]": "Nous vous remercions de vos commentaires !",
+    "[close course hint]": "Pour plus de sécurité, fermez à présent cet onglet de navigateur",
+    "[you gave a rate of]": "La note que vous avez attribuée est",
+    "[course reason]": "Quelle est la raison principale de votre score ?"
 }

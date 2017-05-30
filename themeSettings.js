@@ -52,10 +52,12 @@
     },
     "fonts": [
           {
+              "place": "google",
               "key": "main-font",
               "fontFamily": "Roboto Slab"
           },
           {
+              "place": "google",
               "key": "h1",
               "size": 14,
               "fontFamily": "Roboto Slab",
@@ -65,6 +67,7 @@
               "fontStyle": "normal"
           },
           {
+              "place": "google",
               "key": "h2",
               "size": 14,
               "fontFamily": "Roboto Slab",
@@ -74,6 +77,7 @@
               "fontStyle": "normal"
           },
           {
+              "place": "google",
               "key": "h3",
               "size": 14,
               "fontFamily": "Roboto Slab",
@@ -83,6 +87,7 @@
               "fontStyle": "normal"
           },
           {
+              "place": "google",
               "key": "p",
               "size": 14,
               "fontFamily": "Roboto Slab",
@@ -92,6 +97,7 @@
               "fontStyle": "normal"
           },
           {
+              "place": "google",
               "key": "cite",
               "size": 14,
               "fontFamily": "Roboto Slab",
@@ -101,6 +107,7 @@
               "fontStyle": "normal"
           },
           {
+              "place": "google",
               "key": "mark",
               "size": 14,
               "fontFamily": "Roboto Slab",
@@ -110,6 +117,7 @@
               "fontStyle": "normal"
           },
           {
+              "place": "google",
               "key": "links",
               "size": 14,
               "fontFamily": "Roboto Slab",
