@@ -26,6 +26,10 @@ define('perfectScrollbar', function () {
     return Ps;
 });
 
+define('less', function () {
+    return less;
+});
+
 define(['durandal/app', 'durandal/system', 'underscore', 'bootstrapper', 'templateSettings', 'publishSettings', 'includedModules/modulesInitializer',
         'modules/index', 'modules/publishModeProvider'
     ],

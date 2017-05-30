@@ -29,6 +29,7 @@ define([
     'bootstrapping/knockoutBindings/copyToClipboardBinding',
     'bootstrapping/knockoutBindings/changeCssClassByDelayBinding',
     'bootstrapping/knockoutBindings/containImageBinding',
+    'bootstrapping/knockoutBindings/lessColorOperation',
     'viewmodels/questions/dragAndDrop/bindingHandlers/draggableTextBindingHandler',
     'viewmodels/questions/dragAndDrop/bindingHandlers/draggableTextContainerBindingHandler',
     'viewmodels/questions/dragAndDrop/bindingHandlers/dropspotBindingHandler',

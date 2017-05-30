@@ -156,5 +156,15 @@
     "[login page title]": "Login",
     "[limited access page title]": "Limited access",
     "[sign in page title]": "Sign in",
-    "[register page title]": "Register"
+    "[register page title]": "Register",
+    "[you have finished the course]": "You have finished the course",
+    "[rate your overall experience]": "How would you rate your overall experience of raking this course?",
+    "[poor]": "Poor",
+    "[excellent]": "Excellent",
+    "[answer anonymously]": "Answer anonymously",
+    "[progress has been reported]": "Progress has been successfully reported",
+    "[thank you for your feedback]": "Thank you for your feedback!",
+    "[close course hint]": "Now it is safety to close this browser tab",
+    "[you gave a rate of]": "You gave a rate of",
+    "[course reason]": "What is most important reason for your score?"
 }
