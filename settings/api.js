@@ -25,63 +25,50 @@
     };
 
     function getSettingsToken() {
-        var tokenDefer = $.Deferred();
-        var localStorageProvider = window.parent.localStorageProvider;
-        if (!localStorageProvider) {
-            tokenDefer.resolve(localStorage['token.settings']);
-        } else {
-            localStorageProvider.getItem('token.settings').then(function(value) {
-                tokenDefer.resolve(value);
-            }).fail(function() {
-                tokenDefer.resolve('');
-            });
-        }
-        return tokenDefer.promise();
+        return getCookie('token.settings');
     }
 
     function init() {
-        return getSettingsToken().then(function (token) {
-            headers.Authorization += (getURLParameter('token') || token);
+        headers.Authorization += (getURLParameter('token') || getSettingsToken());
 
-            /* DEBUG */
-            var userDataPromise = $.Deferred().resolve([{ data: { subscription: { accessType: 1, expirationDate: new Date(2016, 1, 1) } } }]);
-            var settingsPromise = $.getJSON('../../settings.js').then(function (response) { return [{ settings: JSON.stringify(response) }]; });
-            var manifestPromise = $.getJSON(manifestUrl);
-            /* END_DEBUG */
+        /* DEBUG */
+        var userDataPromise = $.Deferred().resolve([{ data: { subscription: { accessType: 1, expirationDate: new Date(2016, 1, 1) } } }]);
+        var settingsPromise = $.getJSON('../../settings.js').then(function (response) { return [{ settings: JSON.stringify(response) }]; });
+        var manifestPromise = $.getJSON(manifestUrl);
+        /* END_DEBUG */
 
-            /* RELEASE
-            var userDataPromise = $.ajax({
-                url: identifyUrl,
-                headers: headers,
-                cache: false,
-                type: 'POST',
-                contentType: 'application/json',
-                dataType: 'json'
-            });
-    
-            var settingsPromise = $.ajax({
-                url: settingsUrl,
-                headers: headers,
-                cache: false,
-                contentType: 'application/json',
-                dataType: 'json'
-            });
-    
-            var manifestPromise = $.ajax({
-                url: manifestUrl,
-                headers: headers,
-                cache: false,
-                contentType: 'application/json',
-                dataType: 'json'
-            });
-            END_RELEASE */
+        /* RELEASE
+        var userDataPromise = $.ajax({
+            url: identifyUrl,
+            headers: headers,
+            cache: false,
+            type: 'POST',
+            contentType: 'application/json',
+            dataType: 'json'
+        });
 
-            return $.when(manifestPromise, userDataPromise, settingsPromise).done(function (manifestResponse, userDataResponse, settingsResponse) {
-                apiData.manifest = getManifestModel(manifestResponse[0]);
-                apiData.user = getUserModel(userDataResponse[0]);
-                apiData.settings = getSettingsModel(settingsResponse[0]);
-                apiData.isInited = true;
-            });
+        var settingsPromise = $.ajax({
+            url: settingsUrl,
+            headers: headers,
+            cache: false,
+            contentType: 'application/json',
+            dataType: 'json'
+        });
+
+        var manifestPromise = $.ajax({
+            url: manifestUrl,
+            headers: headers,
+            cache: false,
+            contentType: 'application/json',
+            dataType: 'json'
+        });
+        END_RELEASE */
+
+        return $.when(manifestPromise, userDataPromise, settingsPromise).done(function (manifestResponse, userDataResponse, settingsResponse) {
+            apiData.manifest = getManifestModel(manifestResponse[0]);
+            apiData.user = getUserModel(userDataResponse[0]);
+            apiData.settings = getSettingsModel(settingsResponse[0]);
+            apiData.isInited = true;
         });
     }
 
@@ -191,6 +178,21 @@
     function postMessageToEditor(data) {
         var editorWindow = window.parent;
         editorWindow.postMessage(data, '*');
+    }
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return undefined;
     }
 
 })();

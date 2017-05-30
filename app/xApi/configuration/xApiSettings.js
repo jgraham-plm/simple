@@ -1,5 +1,5 @@
-﻿define(['../constants'],
-    function (constants) {
+﻿define(['../constants', 'publishSettings'],
+    function (constants, publishSettings) {
 
         var settings = {
             scoresDistribution: {
@@ -29,10 +29,12 @@
             initNps: initNps
         };
 
-       
+
+        var lrsHost = publishSettings.defaultLRSUrl || 'reports.easygenerator.com';
+
         var defaultXapi = {
             lrs: {
-                uri: '//' + getxApiHost('reports-staging.easygenerator.com', 'reports.easygenerator.com') + '/xApi/statements',
+                uri: '//' + lrsHost + '/xApi/statements',
                 authenticationRequired: false,
                 credentials: {
                     username: '',
@@ -42,9 +44,11 @@
             allowedVerbs: ['started', 'stopped', 'experienced', 'mastered', 'answered', 'passed', 'failed', 'progressed']
         };
 
+        var npsHost = publishSettings.defaultNpsUrl || 'nps.easygenerator.com';
+
         var defaultNps = {
             nps: {
-                uri: '//' + getxApiHost('nps-staging.easygenerator.com', 'nps.easygenerator.com') + '/xApi/statements',
+                uri: '//' + npsHost + '/xApi/statements',
                 authenticationRequired: false,
                 credentials: {
                     username: '',
@@ -67,12 +71,5 @@
             $.extend(settings.xApi, defaultNps);
         }
 
-        function getxApiHost(stagingEnvHost, liveEnvHost) {
-            var host = window.location.host;
-            var xApiHost = (host.indexOf('localhost') === 0 || host.indexOf('elearning-staging') === 0 || host.indexOf('elearning-branches') === 0) ?
-                stagingEnvHost : liveEnvHost;
-
-            return xApiHost;
-        }
     }
 );
