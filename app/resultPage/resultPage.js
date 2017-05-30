@@ -2,7 +2,7 @@ define([
     'repositories/courseRepository', 'templateSettings', 'plugins/router', 'progressContext',
     'userContext', 'xApi/xApiInitializer', 'includedModules/modulesInitializer',
     'windowOperations', 'constants', 'modules/progress/progressStorage/auth', 'modules/publishModeProvider', 'dialogs/dialog'
-], function (courseRepository, templateSettings, router, progressContext, userContext,
+], function(courseRepository, templateSettings, router, progressContext, userContext,
     xApiInitializer, modulesInitializer, windowOperations, constants, auth, publishModeProvider, Dialog) {
     "use strict";
 
@@ -51,7 +51,7 @@ define([
 
         viewModel.stayLoggedIn(userContext.user.keepMeLoggedIn);
         viewModel.sections = _.chain(course.sections)
-            .filter(function (section) {
+            .filter(function(section) {
                 return section.affectProgress || section.hasSurveyQuestions;
             })
             .map(mapSection)
@@ -66,8 +66,12 @@ define([
         if (router.isNavigationLocked() || viewModel.status() !== statuses.readyToFinish) {
             return;
         }
-        viewModel.status(statuses.sendingRequests);
-        progressContext.remove(function () {
+
+        if (templateSettings.xApi.enabled && xApiInitializer.isLrsReportingInitialized) {
+            viewModel.status(statuses.sendingRequests);
+        }
+
+        progressContext.remove(function() {
             course.finish(onCourseFinished);
         });
     }
@@ -83,11 +87,11 @@ define([
 
         if (templateSettings.nps.enabled && xApiInitializer.isNpsReportingInitialized) {
             viewModel.npsDialog.show({
-                closed: function () {
+                closed: function() {
                     signOut();
                     windowOperations.close();
                 },
-                finalized: function () {
+                finalized: function() {
                     signOut();
                 }
             });
@@ -113,23 +117,23 @@ define([
         section.title = entity.title;
         section.score = entity.score();
 
-        section.readedContents = _.filter(entity.questions, function (question) {
-            return !isQuestion(question) && question.isAnswered;
-        })
+        section.readedContents = _.filter(entity.questions, function(question) {
+                return !isQuestion(question) && question.isAnswered;
+            })
             .length;
 
-        section.questions = _.filter(entity.questions, function (question) {
+        section.questions = _.filter(entity.questions, function(question) {
             return isQuestion(question);
         });
 
-        section.amountOfQuestions = _.filter(section.questions, function (question) {
-            return !question.isSurvey;
-        })
+        section.amountOfQuestions = _.filter(section.questions, function(question) {
+                return !question.isSurvey;
+            })
             .length;
 
-        section.correctQuestions = _.filter(section.questions, function (question) {
-            return question.isAnswered && question.isCorrectAnswered && !question.isSurvey;
-        })
+        section.correctQuestions = _.filter(section.questions, function(question) {
+                return question.isAnswered && question.isCorrectAnswered && !question.isSurvey;
+            })
             .length;
 
         section.amountOfContents = entity.questions.length - section.questions.length;
