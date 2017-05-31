@@ -18,20 +18,20 @@
   ],
   "fonts": [
     {
-      "fontFamily": "Material Icons",
-      "variants": [
-        "400"
-      ],
-      "url": "./css/fonts.css",
-      "isLocal": true
+        "fontFamily": "Material Icons",
+        "variants": [
+            "400"
+        ],
+        "url": "./css/fonts.css",
+        "isLocal": true
     },
     {
-      "fontFamily": "Custom Icons",
-      "variants": [
-        "400"
-      ],
-      "url": "./css/fonts.css",
-      "isLocal": true
+        "fontFamily": "Custom Icons",
+        "variants": [
+            "400"
+        ],
+        "url": "./css/fonts.css",
+        "isLocal": true
     }
   ],
   "presets": [
@@ -887,47 +887,50 @@
     }
   ],
   "defaultTemplateSettings": {
-    "sectionsLayout": {
-      "key": "Tiles"
-    },
-    "treeOfContent": {
-      "enabled": true
-    },
-    "xApi": {
-      "enabled": true,
-      "selectedLrs": "default",
-      "lrs": {
-        "uri": "",
-        "credentials": {
-          "username": "",
-          "password": ""
+        "masteryScore": {
+            "score": 100
         },
-        "authenticationRequired": false
-      },
-      "allowedVerbs": [
-        "started",
-        "stopped",
-        "experienced",
-        "mastered",
-        "answered",
-        "passed",
-        "failed",
-        "progressed"
-      ]
-    },
-    "nps": {
-      "enabled": true
-    },
-    "languages": {
-      "selected": "en",
-      "customTranslations": { }
-    },
-    "pdfExport": {
-      "enabled": false
-    },
-    "showConfirmationPopup": true,
-    "allowContentPagesScoring": false,
-    "allowCrossDeviceSaving": true,
-    "allowLoginViaSocialMedia": true
-  }
+        "sectionsLayout": {
+            "key": "Tiles"
+        },
+        "treeOfContent": {
+            "enabled": true
+        },
+        "xApi": {
+            "enabled": true,
+            "selectedLrs": "default",
+            "lrs": {
+                "uri": "",
+                "credentials": {
+                    "username": "",
+                    "password": ""
+                },
+                "authenticationRequired": false
+            },
+            "allowedVerbs": [
+              "started", 
+              "stopped", 
+              "experienced", 
+              "mastered", 
+              "answered", 
+              "passed", 
+              "failed", 
+              "progressed"
+            ]
+        },
+        "languages": {
+            "selected": "en",
+            "customTranslations": {}
+        },
+        "pdfExport": {
+            "enabled": false
+        },
+       "nps": {
+            "enabled": true
+        },
+        "showConfirmationPopup": true,
+        "allowContentPagesScoring": false,
+        "allowCrossDeviceSaving": true,
+        "allowLoginViaSocialMedia": true
+    }
 }
