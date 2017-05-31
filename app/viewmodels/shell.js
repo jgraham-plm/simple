@@ -64,7 +64,10 @@ define([
                 .then(initializeProgressProvider)
                 .then(initxApi)
                 .then(initApp)
-                .then(initRouter);
+                .then(initRouter)
+                .catch(function (e) {
+                    console.error(e);
+                });
 
             function initxApi() {
                 return xApiInitializer.initialize(templateSettings.xApi, templateSettings.nps);
