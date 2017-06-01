@@ -93,16 +93,17 @@ define([
                 },
                 finalized: function() {
                     signOut();
+                    course.finalize();
                 }
             });
 
             return;
         }
 
-        if (!viewModel.stayLoggedIn())
-            auth.signout();
-
-        windowOperations.close();
+        course.finalize(function() {
+            signOut();
+            windowOperations.close();
+        });
     }
 
     function toggleStayLoggedIn() {

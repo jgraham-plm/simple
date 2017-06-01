@@ -29,8 +29,5 @@
     "allowCrossDeviceSaving": true,
     "allowLoginViaSocialMedia": true,
     "hideFinishActionButtons": false,
-    "copyright": "Copyright © 2017 Easygenerator",
-    "nps": {
-        "enabled": true
-    }
+    "copyright": "Copyright © 2017 Easygenerator"
 }

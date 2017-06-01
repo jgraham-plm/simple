@@ -15,7 +15,6 @@
             currentStep: ko.observable(),
             callbacks: {},
             isReporting: ko.observable(false),
-            resultMessage: ko.observable(''),
             compositionComplete: compositionComplete,
             isCompositionComplete: ko.observable(false)
         };
@@ -59,10 +58,8 @@
                 response: ''
             }, {
                 success: function () {
-                    viewModel.resultMessage('Thank you for your feedback!');
                 },
                 fail: function (reason) {
-                    viewModel.resultMessage('Nps fail((( ' + reason);
                 },
                 fin: function () {
                     viewModel.isReporting(false);
