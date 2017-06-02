@@ -10,10 +10,10 @@
         this.shortId = spec.shortId;
         this.sectionId = spec.sectionId;
         this.title = spec.title;
-        this.hasContent = spec.hasContent;
         this.type = spec.type;
         this.score = ko.observable(spec.score);
         this.learningContents = spec.learningContents;
+        this.questionInstructions = spec.questionInstructions;
         this.isAnswered = false;
         this.isCorrectAnswered = false;
         this.affectProgress = true;
@@ -33,9 +33,8 @@
         };
         this.loadFeedback = loadFeedback,
 
-        this.content = null;
-        this.loadContent = loadContent;
         this.loadLearningContent = loadLearningContent;
+        this.loadQuestionInstructions = loadQuestionInstructions;
         this.load = load;
 
         this.voiceOver = spec.voiceOver;
@@ -75,23 +74,20 @@
     function learningContentExperienced(spentTime) {
         eventManager.learningContentExperienced(this, spentTime);
     }
-
-    function loadContent() {
+    
+    function loadQuestionInstructions() {
         var that = this;
-        return Q.fcall(function () {
-            if (!that.hasContent || !_.isNullOrUndefined(that.content)) {
-                return;
+        var requests = [];
+        _.each(that.questionInstructions, function (item) {
+            if (_.isNullOrUndefined(item.content)) {
+                requests.push(http.get('content/' + that.sectionId + '/' + that.id + '/' + item.id + '.html')
+                    .then(function (response) {
+                        item.content = response;
+                    }));
             }
-
-            var contentUrl = 'content/' + that.sectionId + '/' + that.id + '/content.html';
-            return http.get(contentUrl)
-                .then(function (response) {
-                    that.content = response;
-                })
-                .fail(function () {
-                    that.content = '';
-                });
         });
+        
+        return Q.allSettled(requests);
     }
 
     function loadLearningContent() {
@@ -111,7 +107,7 @@
 
     function load() {
         var that = this;
-        return that.loadContent().then(function () {
+        return that.loadQuestionInstructions().then(function () {
             return that.loadLearningContent().then(function () {
                 return that.loadFeedback();
             });

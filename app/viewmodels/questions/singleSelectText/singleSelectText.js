@@ -4,7 +4,7 @@
     function SingleSelectText() {
         this.question = null;
 
-        this.content = null;
+        this.questionInstructions = [];
         this.isAnswered = ko.observable(false);
         this.answers = null;
         this.isSurveyModeEnabled = false;
@@ -29,7 +29,7 @@
             self.question = question;
 
             self.isSurveyModeEnabled = !!question.isSurvey;
-            self.content = question.content;
+            self.questionInstructions = question.questionInstructions;
             self.isAnswered(question.isAnswered);
             self.isPreview = ko.observable(_.isUndefined(isPreview) ? false : isPreview);
 

@@ -11,6 +11,7 @@
                 submit: submitAnswer
             });
 
+            this.hasContent = spec.hasContent;
             this.answerGroupsValues = null;
 
             this.answerGroups = (function () {

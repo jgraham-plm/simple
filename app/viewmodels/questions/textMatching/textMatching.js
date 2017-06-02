@@ -2,7 +2,7 @@
 
     function TextMatching() {
         this.question = null;
-        this.content = null;
+        this.questionInstructions = [];
         this.isAnswered = ko.observable(false);
 
         this.values = [];
@@ -26,7 +26,7 @@
         return Q.fcall(function () {
             self.question = question;
 
-            self.content = question.content;
+            self.questionInstructions = question.questionInstructions;
             self.isAnswered(question.isAnswered);
             self.isPreview = ko.observable(_.isUndefined(isPreview) ? false : isPreview);
 

@@ -7,7 +7,7 @@ define(function () {
         var self = this;
 
         return Q.fcall(function (){
-            self.content = question.content;
+            self.questionInstructions = question.questionInstructions;
             self.background = question.background;
             self.isAnswered = ko.observable(question.isAnswered);
             self.isMultiple = question.isMultiple;
