@@ -18,7 +18,6 @@ define(['knockout', 'plugins/router', 'constants', 'modules/questionsNavigation'
             this.copyright = templateSettings.copyright;
 
             this.learningContents = [];
-            this.questionInstructions = [];
             this.correctFeedback = ko.observable(null);
             this.incorrectFeedback = ko.observable(null);
             this.feedbackView = '';
@@ -87,7 +86,6 @@ define(['knockout', 'plugins/router', 'constants', 'modules/questionsNavigation'
             this.isSurvey = !!question.isSurvey;
 
             this.learningContents = this.question.learningContents;
-            this.questionInstructions = this.question.questionInstructions;
             this.correctFeedback(this.question.feedback.correct);
             this.incorrectFeedback(this.question.feedback.incorrect);
 
@@ -100,7 +98,7 @@ define(['knockout', 'plugins/router', 'constants', 'modules/questionsNavigation'
             if(isPreview){
                 var self = this;
 
-                return this.question.load().then(function(){
+                return this.question.loadContent().then(function(){
                     return self.activeQuestionViewModel.initialize(self.question, isPreview);
                 });
             } else {

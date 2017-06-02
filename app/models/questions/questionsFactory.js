@@ -1,10 +1,10 @@
-﻿define(['guard', 'constants', 'models/contentBlock', 'models/questions/multipleSelectQuestion',
+﻿define(['guard', 'constants', 'models/learningContent', 'models/questions/multipleSelectQuestion',
         'models/questions/fillInTheBlankQuestion', 'models/questions/dragAndDropQuestion',
         'models/questions/singleSelectImageQuestion', 'models/questions/textMatchingQuestion',
         'models/questions/informationContent', 'models/questions/statementQuestion', 'models/questions/hotspot',
         'models/questions/openQuestion', 'models/questions/scenarioQuestion', 'models/questions/rankingTextQuestion'
     ],
-    function (guard, constants, ContentBlock, MultipleSelectQuestion, FillInTheBlankQuestion, DragAndDropQuestion,
+    function (guard, constants, LearningContent, MultipleSelectQuestion, FillInTheBlankQuestion, DragAndDropQuestion,
         SingleSelectImageQuestion, TextMatchingQuestion, InformationContent,
         StatementQuestion, Hotspot, OpenQuestion, ScenarioQuestion, RankingText) {
         "use strict";
@@ -25,17 +25,13 @@
                 title: question.title,
                 type: question.type,
                 learningContents: _.map(question.learningContents, function (learningContent) {
-                    return new ContentBlock({
+                    return new LearningContent({
                         id: learningContent.id
-                    });
-                }),
-                questionInstructions: _.map(question.questionInstructions, function (instruction) {
-                    return new ContentBlock({
-                        id: instruction.id
                     });
                 }),
                 score: 0,
                 voiceOver: question.voiceOver,
+                hasContent: question.hasContent,
                 hasCorrectFeedback: question.hasCorrectFeedback,
                 hasIncorrectFeedback: question.hasIncorrectFeedback
             };
@@ -55,7 +51,6 @@
                     return new DragAndDropQuestion(questionData);
                 case constants.questionTypes.fillInTheBlank:
                     questionData.answerGroups = question.answerGroups;
-                    questionData.hasContent = question.hasContent;
                     return new FillInTheBlankQuestion(questionData);
                 case constants.questionTypes.singleSelectImage:
                     questionData.correctAnswerId = question.correctAnswerId;

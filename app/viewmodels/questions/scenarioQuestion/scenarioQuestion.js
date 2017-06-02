@@ -3,7 +3,7 @@
 
     function ScenarioQuestion(){
         this.question = null;
-        this.questionInstructions = [];
+        this.content = null;
         this.embedCode = ko.observable(null);
         this.isAnswered = ko.observable(false);
         this.isCorrect = ko.observable(false);
@@ -17,7 +17,7 @@
 
         return Q.fcall(function () {
             self.question = question;
-            self.questionInstructions = question.questionInstructions;
+            self.content = question.content;
             self.embedCode(question.embedCode);
             self.isAnswered(question.isAnswered);
             self.isCorrect(question.isCorrectAnswered);

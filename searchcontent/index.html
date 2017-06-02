@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -62,11 +62,9 @@
             <!-- /ko -->
             <h3 class="question-title with-icon" data-bind="text: question.title"></h3>
 
-            <!-- ko if: question.questionInstructions.length > 0 -->
+            <!-- ko if: question.hasContent && question.type != 'fillInTheBlank' -->
             <div class="question-content-wrapper">
-                <!-- ko foreach: question.questionInstructions -->
-                <div class="question-content styled-content" data-bind="loadHtml: '../content/' + section.id + '/' + question.id + '/' + id + '.html?v=1453372455198'"></div>
-                <!-- /ko -->
+                <div class="question-content styled-content" data-bind="loadHtml: '../content/' + section.id + '/' + question.id + '/content.html?v=1453372455198'"></div>
             </div>
             <!-- /ko -->
 

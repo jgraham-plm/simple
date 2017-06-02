@@ -3,7 +3,7 @@
 
     function OpenQuestion(){
         this.question = null;
-        this.questionInstructions = [];
+        this.content = null;
         this.answeredText = ko.observable('');
         this.isAnswered = ko.observable(false);
         
@@ -15,7 +15,7 @@
 
         return Q.fcall(function() {
             self.question = question;
-            self.questionInstructions = question.questionInstructions;
+            self.content = question.content;
             self.answeredText(question.answeredText);
             self.isAnswered(question.isAnswered);
             self.isPreview = ko.observable(_.isUndefined(isPreview) ? false : isPreview);

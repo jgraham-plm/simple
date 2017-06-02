@@ -1,14 +1,9 @@
 ﻿<section class="overlay-wrapper">
-    <!-- ko if: questionInstructions.length > 0 -->
-    <section id="question-instructions" class="question-instructions" data-animate="">
-        <ul class="question-instruction-items unstyled">
-            <!-- ko foreach: questionInstructions-->
-            <li class="question-instruction-item styled-content" data-bind="contentBlock: content"></li>
-            <!-- /ko -->
-        </ul>
-    </section>
+    <!-- ko if: content -->
+    <div class="question-content-wrapper">
+        <div class="question-content styled-content" data-bind="html: content, elementsWrap: {}"></div>
+    </div>
     <!-- /ko -->
-
     <!-- ko if: isSurveyModeEnabled -->
     <!-- ko if: isAnswered() || isPreview() -->
     <div class="text-matching-caption" data-translate-text="[survey mode answered caption]"></div>

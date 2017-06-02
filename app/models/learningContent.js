@@ -1,11 +1,11 @@
 ﻿define([],
     function () {
 
-        function ContentBlock(spec) {
+        function LearningContent(spec) {
             this.id = spec.id;
             this.content = null;
         }
 
-        return ContentBlock;
+        return LearningContent;
     }
 );

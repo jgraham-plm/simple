@@ -314,7 +314,11 @@ ul {
 
     word-wrap: break-word;
     line-height: 1.5;
-    
+
+    &:first-child{
+        margin-top: 30px;
+    }
+
     &:not(:last-child){
         margin-bottom: 50px;
     }    
@@ -3734,16 +3738,6 @@ ul {
     line-height: 1.5em;
 }
 
-.question-instructions {
-    margin-bottom: 30px;
-}
-
-.learning-contents {
-    .styled-content:first-child{
-        margin-top: 30px;
-    }
-}
-
 .information-content-title {
     padding-bottom: 15px;
     margin-bottom: 25px;
@@ -3811,7 +3805,7 @@ ul {
     }
 
     position: relative;
-    
+
     .learning-content-title {
         position: absolute;
         top: 0;

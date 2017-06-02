@@ -3,7 +3,7 @@
 
     function Statement() {
         this.question = null;
-        this.questionInstructions = [];
+        this.content = null;
         this.statements = null;
         this.isAnswered = ko.observable(false);
         this.isSurveyModeEnabled = false;
@@ -28,7 +28,7 @@
     Statement.prototype.initialize = function(question, isPreview) {
         this.question = question;
         this.isSurveyModeEnabled = !!question.isSurvey;
-        this.questionInstructions = question.questionInstructions;
+        this.content = question.content;
         this.isAnswered(question.isAnswered);
         this.isPreview = ko.observable(_.isUndefined(isPreview) ? false : isPreview);
         this.statements = _.map(question.statements, function(statement) {

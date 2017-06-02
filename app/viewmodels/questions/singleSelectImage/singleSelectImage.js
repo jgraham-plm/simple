@@ -7,7 +7,7 @@
         this.canHover = !browserSupport.isMobileDevice;
         this.question = null;
 
-        this.questionInstructions = [];
+        this.content = null;
         this.isAnswered = ko.observable(false);
         this.answers = null;
         this.checkedAnswerId = ko.observable(null);
@@ -28,7 +28,7 @@
             self.question = question;
             self.checkedAnswerId(question.checkedAnswerId);
 
-            self.questionInstructions = question.questionInstructions;
+            self.content = question.content;
             self.isAnswered(question.isAnswered);
             self.isPreview = ko.observable(_.isUndefined(isPreview) ? false : isPreview);
             self.answers = _.map(question.answers, function (answer) {

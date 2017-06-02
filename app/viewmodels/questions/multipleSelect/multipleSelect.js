@@ -6,7 +6,7 @@
 
 		this.question = null;
 
-		this.questionInstructions = [];
+	    this.content = null;
 	    this.isAnswered = ko.observable(false);
 	    this.answers = null;
 		this.isSurveyModeEnabled = false;
@@ -27,7 +27,7 @@
 			self.question = question;
 
 			self.isSurveyModeEnabled = !!question.isSurvey;
-			self.questionInstructions = question.questionInstructions;
+			self.content = question.content;
 			self.isAnswered(question.isAnswered);
 			self.isPreview = ko.observable(_.isUndefined(isPreview) ? false : isPreview);
 
