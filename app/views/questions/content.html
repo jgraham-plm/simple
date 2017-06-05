@@ -1,6 +1,9 @@
 ﻿<section id="content" class="question unselectable" data-bind="keyDown: { 37: { handler: goPrevious }, 39: { handler: goNext } }">
     <div>
         <header class="page-header">
+            <div class="navigation-home-link-wrapper" data-bind="click: backToSections">
+                <div tabindex="0" class="navigation-home-link material-icons" data-bind="submitOnEnter: backToSections, css: { disabled: isNavigationLocked }">home</div>
+            </div>
             <div class="section-progress-wrapper">
                 <div class="section-image-wrapper" data-bind="style: { 'background-image': 'url(' + section.imageUrl + ')' }, css: { 'affect-progress': section.affectProgress }">
                     <!-- ko if: section.affectProgress -->
