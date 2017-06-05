@@ -6,9 +6,9 @@
             copyright = templateSettings.copyright,
 
             canActivate = function () {
-                if (context.course.hasIntroductionContent == false) {
-                    return { redirect: '#sections' };
-                }
+                //if (context.course.hasIntroductionContent == false) {
+                //    return { redirect: '#sections' };
+                //}
                 return true;
             },
 
@@ -40,7 +40,7 @@
             copyright: copyright,
             isNavigationLocked: router.isNavigationLocked,
 
-            startCourse: startCourse,
+            startCourse: activate,
             canActivate: canActivate,
             activate: activate
         };
