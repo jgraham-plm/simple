@@ -5,6 +5,7 @@
         title: null,
         learningContents: null,
         navigateNext: navigateNext,
+        backToLearning: backToLearning,
         copyright: templateSettings.copyright,
 
         activate: activate,
@@ -20,6 +21,11 @@
 
         var nextUrl = !_.isNullOrUndefined(viewModel.navigationContext.nextQuestionUrl) ? viewModel.navigationContext.nextQuestionUrl : 'sections';
         router.navigate(nextUrl);
+    }
+
+    function backToLearning() {
+        // Post a message for the PLM app.
+        window.parent.postMessage({name: 'backToLearning'}, '*');
     }
 
     function activate(sectionId, question) {

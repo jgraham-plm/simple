@@ -40,6 +40,11 @@ define(['knockout', 'plugins/router', 'constants', 'modules/questionsNavigation'
             this.hideTryAgain = false;
         };
 
+        QuestionContent.prototype.backToLearning = function () {
+            // Post a message for the PLM app.
+            window.parent.postMessage({name: 'backToLearning'}, '*');
+        }
+
         QuestionContent.prototype.submit = function() {
             var self = this;
             
