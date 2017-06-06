@@ -18,8 +18,7 @@
                 $element.addClass('mastered')
             }
 
-            var basicColor = $element.css('color') || 'rgb(211,212,216)',
-            progressColor = $element.css('border-top-color') || 'rgb(87,157,193)';
+            var basicColor = 'rgb(252,98,42)';
 
             cnxt.beginPath();
             cnxt.arc(centerX, centerY, radius, 0, 2 * Math.PI);
@@ -30,7 +29,7 @@
 
             if (progress > 0) {
                 cnxt.beginPath();
-                cnxt.strokeStyle = progressColor;
+                cnxt.strokeStyle = basicColor;
                 cnxt.lineWidth = lineWidth;
 
                 if (progress == 1) {
