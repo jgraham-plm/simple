@@ -1,31 +1,31 @@
-@text-color: #42515f;
-@main-color: #43aaa3;
-@secondary-color: #2d9ec6;
+@text-color: #393939;
+@main-color: #f37321;
+@secondary-color: #13b5ea;
 @button-text-color: #fff;
 @content-body-color: #fff;
-@correct-color: #4caf50;
-@incorrect-color: #f16162;
+@correct-color: #447501;
+@incorrect-color: #c92318;
 
-@main-font-fontFamily: Roboto Slab;
+@main-font-fontFamily: 'Benton Sans Book';
 
-@Heading1-color: #42515f;
-@Heading1-fontFamily: Roboto Slab;
+@Heading1-color: #393939;
+@Heading1-fontFamily: 'Benton Sans Medium';
 @Heading1-fontStyle: normal;
-@Heading1-fontWeight: 700;
+@Heading1-fontWeight: 400;
 @Heading1-size: 24px;
 @Heading1-textDecoration: none;
 @Heading1-textBackgroundColor: transparent;
 
-@Heading2-color: #42515f;
-@Heading2-fontFamily: Roboto Slab;
+@Heading2-color: #393939;
+@Heading2-fontFamily: 'Benton Sans Medium';
 @Heading2-fontStyle: normal;
-@Heading2-fontWeight: 700;
+@Heading2-fontWeight: 400;
 @Heading2-size: 22px;
 @Heading2-textDecoration: none;
 @Heading2-textBackgroundColor: transparent;
 
-@Heading3-color: #42515f;
-@Heading3-fontFamily: Roboto Slab;
+@Heading3-color: #393939;
+@Heading3-fontFamily: 'Benton Sans Book';
 @Heading3-fontStyle: normal;
 @Heading3-fontWeight: 700;
 @Heading3-size: 20px;
@@ -33,31 +33,31 @@
 @Heading3-textBackgroundColor: transparent;
 
 @Highlighted-color: #fff;
-@Highlighted-fontFamily: Roboto Slab;
+@Highlighted-fontFamily: 'Benton Sans Book';
 @Highlighted-fontStyle: normal;
 @Highlighted-fontWeight: normal;
 @Highlighted-size: 18px;
 @Highlighted-textDecoration: none;
-@Highlighted-textBackgroundColor: #43aaa3;
+@Highlighted-textBackgroundColor: #f37321;
 
-@links-color: #43aaa3;
-@links-fontFamily: Roboto Slab;
+@links-color: #127ba9;
+@links-fontFamily: 'Benton Sans Book';
 @links-fontStyle: normal;
 @links-fontWeight: normal;
 @links-size: 18px;
 @links-textDecoration: underline;
 @links-textBackgroundColor: transparent;
 
-@Normal-color: #42515f;
-@Normal-fontFamily: Roboto Slab;
+@Normal-color: #393939;
+@Normal-fontFamily: 'Benton Sans Book';
 @Normal-fontStyle: normal;
 @Normal-fontWeight: normal;
 @Normal-size: 18px;
 @Normal-textDecoration: none;
 @Normal-textBackgroundColor: transparent;
 
-@Quote-color: #42515f;
-@Quote-fontFamily: Roboto Slab;
+@Quote-color: #393939;
+@Quote-fontFamily: 'Benton Sans Book';
 @Quote-fontStyle: italic;
 @Quote-fontWeight: normal;
 @Quote-size: 18px;
@@ -976,7 +976,7 @@ body {
         border-color: @correct-color;
     }
 
-    &.result {        
+    &.result {
         border-color: fade(@correct-color, 70%);
     }
 }
@@ -1243,7 +1243,7 @@ body {
     background-color: fade(@content-body-color, 50%);
     #content{
         .result-header{
-            .course-title{				
+            .course-title{
                 .course-label{
                     color: fade(@text-color, 50%);
                 }
@@ -1259,10 +1259,10 @@ body {
             }
         }
 
-        .result-page-content{              
+        .result-page-content{
             background-color: @content-body-color;
-            
-            .section-header{  
+
+            .section-header{
                 &.correct{
                     background-color: fade(@correct-color, 10%);
                     border-top-color: fade(@correct-color, 20%);
@@ -1272,9 +1272,9 @@ body {
                     }
                 }
 
-                &.wrong{     
+                &.wrong{
                     background-color: fade(@incorrect-color, 10%);
-                    border-top-color: fade(@incorrect-color, 20%);  
+                    border-top-color: fade(@incorrect-color, 20%);
 
                     .section-header-analytic-icon{
                         background-color: @incorrect-color;
@@ -1295,8 +1295,8 @@ body {
                 }
             }
 
-            .section-content{                    
-                .question-header{   
+            .section-content{
+                .question-header{
                     &.survey{
                         &::after,
                         .question-header-icon{
@@ -1320,13 +1320,13 @@ body {
                 }
 
                 .question-title,
-                .question-content{                        
+                .question-content{
                     border-color: fade(@text-color, 10%);
 
                     .overlay-wrapper::before{
                         background-color: fade(@content-body-color, 30%);
                     }
-                    
+
                     .question-result-block{
                         color: @correct-color;
                         background-color: fade(@correct-color, 10%);
@@ -1338,14 +1338,14 @@ body {
                     }
                 }
             }
-        }   
+        }
 
         .result-page-go-top{
             background-color: fade(@main-color, 70%);
             color: white;
             box-shadow: 0px 0px 4px -1px black;
 
-            &:hover{            
+            &:hover{
                 background-color: @main-color;
             }
         }
@@ -1461,7 +1461,7 @@ body {
             }
             .validation-container{
                 color: fade(@text-color, 40%);
-                
+
                 .validator{
                     transition: color .2s linear;
                     &.correct{
@@ -1562,7 +1562,7 @@ body {
             div.link-content {
                 &.parsed {
                     color: @text-color;
-                } 
+                }
                 &.empty {
                     &:before {
                         background-color: fade(@Normal-color, 10%);
@@ -1580,7 +1580,7 @@ body {
         }
     }
     div.images {
-        &.parsed {  
+        &.parsed {
             background-color: fade(@Normal-color, 5%);
         }
     }

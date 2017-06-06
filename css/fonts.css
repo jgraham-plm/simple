@@ -1,3 +1,17 @@
+/* PLM typefaces */
+@font-face {
+    font-family: 'Benton Sans Book';
+    font-style: normal;
+    font-weight: 400;
+    src: url(../fonts/benton-sans-book.woff2) format('woff2'), url(../fonts/benton-sans-book.woff) format('woff');
+}
+@font-face {
+    font-family: 'Benton Sans Medium';
+    font-style: normal;
+    font-weight: 400;
+    src: url(../fonts/benton-sans-medium.woff2) format('woff2'), url(../fonts/benton-sans-medium.woff) format('woff');
+}
+/* End PLM typefaces */
 @font-face {
   font-family: 'Material Icons';
   font-style: normal;
