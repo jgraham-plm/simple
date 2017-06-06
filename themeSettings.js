@@ -10,11 +10,11 @@
             },
             {
                 "key": "@main-color",
-                "value": "#43aaa3"
+                "value": "#f37321"
             },
             {
                 "key": "@secondary-color",
-                "value": "#2d9ec6"
+                "value": "#13b5ea"
             },
             {
                 "key": "@button-text-color",
@@ -26,11 +26,11 @@
             },
             {
                 "key": "@correct-color",
-                "value": "#4caf50"
+                "value": "#447501"
             },
             {
                 "key": "@incorrect-color",
-                "value": "#f16162"
+                "value": "#c92318"
             }
           ],
           "background": {
@@ -54,14 +54,14 @@
           {
               "place": "google",
               "key": "main-font",
-              "fontFamily": "Roboto Slab"
+              "fontFamily": "Benton Sans Book"
           },
           {
               "place": "google",
               "key": "h1",
               "size": 14,
-              "fontFamily": "Roboto Slab",
-              "color": "#252728",
+              "fontFamily": "Benton Sans Medium",
+              "color": "#393939",
               "fontWeight": "normal",
               "textDecoration": "none",
               "fontStyle": "normal"
@@ -70,8 +70,8 @@
               "place": "google",
               "key": "h2",
               "size": 14,
-              "fontFamily": "Roboto Slab",
-              "color": "#252728",
+              "fontFamily": "Benton Sans Medium",
+              "color": "#393939",
               "fontWeight": "normal",
               "textDecoration": "none",
               "fontStyle": "normal"
@@ -80,8 +80,8 @@
               "place": "google",
               "key": "h3",
               "size": 14,
-              "fontFamily": "Roboto Slab",
-              "color": "#252728",
+              "fontFamily": "Benton Sans Book",
+              "color": "#393939",
               "fontWeight": "normal",
               "textDecoration": "none",
               "fontStyle": "normal"
@@ -90,8 +90,8 @@
               "place": "google",
               "key": "p",
               "size": 14,
-              "fontFamily": "Roboto Slab",
-              "color": "#252728",
+              "fontFamily": "Benton Sans Book",
+              "color": "#393939",
               "fontWeight": "normal",
               "textDecoration": "none",
               "fontStyle": "normal"
@@ -100,8 +100,8 @@
               "place": "google",
               "key": "cite",
               "size": 14,
-              "fontFamily": "Roboto Slab",
-              "color": "#252728",
+              "fontFamily": "Benton Sans Book",
+              "color": "#393939",
               "fontWeight": "normal",
               "textDecoration": "none",
               "fontStyle": "normal"
@@ -110,8 +110,8 @@
               "place": "google",
               "key": "mark",
               "size": 14,
-              "fontFamily": "Roboto Slab",
-              "color": "#252728",
+              "fontFamily": "Benton Sans Book",
+              "color": "#393939",
               "fontWeight": "normal",
               "textDecoration": "none",
               "fontStyle": "normal"
@@ -120,8 +120,8 @@
               "place": "google",
               "key": "links",
               "size": 14,
-              "fontFamily": "Roboto Slab",
-              "color": "#252728",
+              "fontFamily": "Benton Sans Book",
+              "color": "#127ba9",
               "fontWeight": "normal",
               "textDecoration": "none",
               "fontStyle": "normal"
