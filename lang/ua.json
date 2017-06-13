@@ -151,14 +151,15 @@
     "[limited access page title]": "Обмежений доступ",
     "[sign in page title]": "Авторизація",
     "[register page title]": "Реєстрація",
-    "[you have finished the course]": "Ви закінчили курс",
+    "[you have finished your course]": "Ви закінчили курс",
     "[rate your overall experience]": "Як ви оцінили б досвід отриманий від проходження курса?",
     "[poor]": "Жалюгідний",
     "[excellent]": "Прекрасний",
     "[answer anonymously]": "Відповісти анонімно",
     "[progress has been reported]": "Прогресс було успішно відправленно",
     "[thank you for your feedback]": "Дякуємо за ваш відгук",
-    "[close course hint]": "Тепер Ви можете закрити вікно браузера",
-    "[you gave a rate of]": "Ви оцінили курс як",
-    "[course reason]": "Що саме було причиною поставити таку оцінку?"
+    "[you can close the page now]": "Тепер Ви можете закрити вікно браузера",
+    "[you rated this course with an]": "Ви оцінили курс як",
+    "[course reason]": "Що саме було причиною поставити таку оцінку?",
+    "[download]": "Завантажити"
 }

@@ -1544,6 +1544,31 @@ body {
 
 /*#endregion ACCOUNT*/
 
+/*region documents*/
+.document-editor > div {
+    border-bottom: 1px solid fade(@text-color, 10%);
+    .document-container {
+        .download-document-btn {
+            color: fade(@text-color, 90%);
+            background-color: fade(@text-color, 10%);
+
+            &:hover, &:focus, &:active {
+                color: fade(@text-color, 100%);
+                background-color: fade(@text-color, 20%);
+            }
+        }
+        .document-icon {
+            color: fade(@text-color, 50%);
+        }
+        .separator:before {
+            background-color: fade(@text-color, 10%);
+        }
+        .document-title {
+            color: fade(@text-color, 80%);
+        }
+    }
+}
+/*endregion*/
 
 /*region CURATION*/
 .content-inner-wrapper {

@@ -157,14 +157,15 @@
     "[limited access page title]": "Limited access",
     "[sign in page title]": "Sign in",
     "[register page title]": "Register",
-    "[you have finished the course]": "You have finished the course",
-    "[rate your overall experience]": "How would you rate your overall experience of raking this course?",
+    "[you have finished your course]": "You have finished your course",
+    "[rate your overall experience]": "How would you rate the overall experience of the course?",
     "[poor]": "Poor",
     "[excellent]": "Excellent",
     "[answer anonymously]": "Answer anonymously",
-    "[progress has been reported]": "Progress has been successfully reported",
+    "[progress has been reported]": "Your progress has been successfully reported",
     "[thank you for your feedback]": "Thank you for your feedback!",
-    "[close course hint]": "Now it is safety to close this browser tab",
-    "[you gave a rate of]": "You gave a rate of",
-    "[course reason]": "What is most important reason for your score?"
+    "[you can close the page now]": "You can close the page now",
+    "[you rated this course with an]": "You rated this course with an",
+    "[course reason]": "Could you tell us the reason for this score?",
+    "[download]": "Download"
 }

@@ -1,4 +1,4 @@
-﻿define(['knockout'], function (ko) {
+﻿define(['knockout', 'localizationManager'], function (ko, localizationManager) {
     ko.bindingHandlers.localize = {
         update: function (element, valueAccessor) {
             localizeValue(element, valueAccessor);
@@ -13,36 +13,22 @@
         }
 
         if (!_.isUndefined(value['text'])) {
-            $(element).text(getLocalizedText(value['text']));
+            $(element).text(localizationManager.getLocalizedText(value['text']));
         }
         if (!_.isUndefined(value['placeholder'])) {
-            $(element).attr('placeholder', getLocalizedText(value['placeholder']));
+            $(element).attr('placeholder', localizationManager.getLocalizedText(value['placeholder']));
         }
         if (!_.isUndefined(value['value'])) {
-            $(element).prop('value', getLocalizedText(value['value']));
+            $(element).prop('value', localizationManager.getLocalizedText(value['value']));
         }
         if (!_.isUndefined(value['title'])) {
-            $(element).prop('title', getLocalizedText(value['title']));
+            $(element).prop('title', localizationManager.getLocalizedText(value['title']));
         }
         if (!_.isUndefined(value['html'])) {
-            $(element).html(getLocalizedText(value['html']));
+            $(element).html(localizationManager.getLocalizedText(value['html']));
         }
         if (!_.isUndefined(value['data-text'])) {
-            $(element).attr('data-text', getLocalizedText(value['data-text']));
-        }
-    }
-
-    function getLocalizedText(value) {
-        if (_.isString(value)) {
-            return TranslationPlugin.getTextByKey(value);
-        } else if (_.isObject(value)) {
-            var text = TranslationPlugin.getTextByKey(value.key);
-
-            for (var replacement in value.replace) {
-                text = text.replace('{' + replacement + '}', value.replace[replacement]);
-            }
-
-            return text;
+            $(element).attr('data-text', localizationManager.getLocalizedText(value['data-text']));
         }
     }
 });

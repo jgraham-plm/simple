@@ -638,6 +638,63 @@ ul {
         }
     }
 
+    /*region Document editor*/
+    .document-editor > div {
+        padding-bottom: 16px;
+
+        .document-container {
+            display: table;
+            width: 100%;
+
+            .document-icon, .document-title, .download-document-btn-container, .separator {
+                display: table-cell;
+                vertical-align: middle;
+            }
+
+            .document-title {
+                width: 100%;
+                font-size: 14px;
+            }
+
+            .document-icon {
+                font-size: 36px;
+
+                .icon-container {
+                    position: relative;
+
+                    .document-type-text {
+                        position: absolute;
+                        font-family: 'Arial';
+                        text-transform: uppercase;
+                        font-size: 10px;
+                        top: 16px;
+                        left: 6px;
+                    }
+                }
+            }
+
+            .separator {
+                padding: 10px;
+
+                &:before {
+                    content: '';
+                    display: block;
+                    width: 1px;
+                    height: 22px;
+                }
+            }
+
+            .download-document-btn {
+                padding: 10px 20px;
+                border-radius: 3px;
+                white-space: nowrap;
+                text-decoration: none;
+                transition: background-color .3s;
+            }
+        }
+    }
+    /*endregion*/
+
     /*region Media editor audio*/
     .audio-editor {
         > div {

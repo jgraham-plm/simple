@@ -157,14 +157,15 @@
     "[limited access page title]": "有限的访问",
     "[sign in page title]": "登录",
     "[register page title]": "注册",
-    "[you have finished the course]": "您已经完成该课程",
-    "[rate your overall experience]": "您如何评价学习改课程的整体体验？",
+    "[you have finished your course]": "您已经完成了课程",
+    "[rate your overall experience]": "您如何评价改课程的整体体验？",
     "[poor]": "差",
     "[excellent]": "很好",
     "[answer anonymously]": "匿名回答",
-    "[progress has been reported]": "已经成功报告进度",
+    "[progress has been reported]": "已成功报告您的进度",
     "[thank you for your feedback]": "感谢您的反馈意见！",
-    "[close course hint]": "现在可以安全关闭此浏览器选项卡",
-    "[you gave a rate of]": "您给出的评价为",
-    "[course reason]": "您给出该评分最重要的原因是什么？"
+    "[you can close the page now]": "现在您可关闭页面",
+    "[you rated this course with an]": "您对该课程的评分为",
+    "[course reason]": "您可以告知我们给出该评分的原因吗？",
+    "[download]": "下载"
 }

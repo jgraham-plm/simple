@@ -60,7 +60,7 @@
 			content.filterQuestionTypes = filterQuestionTypes;
 			content.shuffleKeyValues = shuffleKeyValues;
 			content.shuffle = shuffle;
-			content.logoUrl = (configs.templateSetting && configs.templateSetting.logo && configs.templateSetting.logo.url) ? configs.templateSetting.logo.url : defaultLogo;
+			content.logoUrl = (configs.templateSettings && configs.templateSettings.branding && configs.templateSettings.branding.logo && configs.templateSettings.branding.logo.url) ? configs.templateSettings.branding.logo.url : defaultLogo;
 
 			TranslationPlugin.localize();
 			ko.applyBindings(content);

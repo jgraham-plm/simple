@@ -39,6 +39,20 @@
                 error: 'error',
                 ignored: 'ignored'
             }
+        },
+        documents: {
+            types: {
+                pdf: 'pdf',
+                word: 'word',
+                exel: 'exel',
+                powerpoint: 'powerpoint',
+                zip: 'zip'
+            },
+            downloadLocalizationKey: '[download]',
+            containerSelector: '.document-container',
+            sizeAttrName: 'data-document-size-kb',
+            typeAttrName: 'data-document-type',
+            downloadBtnSelector: '.download-document-btn'
         }
     };
 
