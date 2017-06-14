@@ -45,7 +45,7 @@
     "[browser not supported]": "Your browser is currently not supported.",
     "[browser not supported hint]": "Don’t worry, there is an easy fix. All you have to do is click one of the icons below and follow the instructions.",
     "[page not found title]": "Page not found (404)",
-    "[page not found message]": "Sorry, the page you are looking for cannot be found. Try checking the URL for errors, use the above navigation bar or click the 'Home' link below.",
+    "[page not found message]": "Sorry, the page you are looking for cannot be found.",
     "[tracking and tracing header]": "Your credentials for progress tracking",
     "[tracking and tracing hint]": "Please enter your credentials and click \"Start and report my results\" to enable result tracking. Otherwise, click \"Do not report, just start\".",
     "[tracking and tracing name field]": "Your name",
