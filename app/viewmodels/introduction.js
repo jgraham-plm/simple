@@ -16,9 +16,8 @@
             canActivate = function () {
                 if (context.course.hasIntroductionContent == false) {
                     return {redirect: getFirstQuestionPath()};
-                } else {
-                    return true;
-		}
+                }
+                return true;
             },
 
             activate = function () {
