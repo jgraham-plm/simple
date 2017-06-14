@@ -5,6 +5,7 @@
         title: null,
         learningContents: null,
         navigateNext: navigateNext,
+	showBackToLearning: window.self !== window.top,
         backToLearning: backToLearning,
         copyright: templateSettings.copyright,
 
