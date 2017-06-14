@@ -1,15 +1,24 @@
-﻿define(['durandal/app', 'context', 'plugins/router', 'plugins/http', 'templateSettings'],
-    function (app, context, router, http, templateSettings) {
+﻿define(['durandal/app', 'context', 'repositories/courseRepository', 'plugins/router', 'plugins/http', 'templateSettings'],
+    function (app, context, repository, router, http, templateSettings) {
+
+        var getFirstQuestionPath = function () {
+	    var course = repository.get();
+            if (course) {
+                var firstSection = course.sections[0];
+                return '#/section/' + firstSection.id + '/question/' + firstSection.questions[0].id;
+            }
+        };
 
         var courseTitle = null,
             content = null,
             copyright = templateSettings.copyright,
 
             canActivate = function () {
-                //if (context.course.hasIntroductionContent == false) {
-                //    return { redirect: '#sections' };
-                //}
-                return true;
+                if (context.course.hasIntroductionContent == false) {
+                    return {redirect: getFirstQuestionPath()};
+                } else {
+                    return true;
+		}
             },
 
             activate = function () {
@@ -27,11 +36,17 @@
             },
 
             startCourse = function () {
-                if (router.isNavigationLocked()) {
+                var questionPath = getFirstQuestionPath();
+                if (!questionPath) {
+                    router.navigate('404');
                     return;
                 }
-                router.navigate('sections');
 
+	        if (router.isNavigationLocked()) {
+		    return;
+		}
+
+                router.navigate(firstQuestionPath);
             };
 
         return {
@@ -40,7 +55,7 @@
             copyright: copyright,
             isNavigationLocked: router.isNavigationLocked,
 
-            startCourse: activate,
+            startCourse: startCourse,
             canActivate: canActivate,
             activate: activate
         };
