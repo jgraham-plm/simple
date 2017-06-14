@@ -43,7 +43,7 @@
                 if (!questionPath) {
                     router.navigate('404');
                 } else {
-                    router.navigate(firstQuestionPath);
+                    router.navigate(questionPath);
                 }
             };
 
