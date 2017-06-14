@@ -35,17 +35,16 @@
             },
 
             startCourse = function () {
-                var questionPath = getFirstQuestionPath();
-                if (!questionPath) {
-                    router.navigate('404');
-                    return;
-                }
-
 	        if (router.isNavigationLocked()) {
 		    return;
 		}
 
-                router.navigate(firstQuestionPath);
+                var questionPath = getFirstQuestionPath();
+                if (!questionPath) {
+                    router.navigate('404');
+                } else {
+                    router.navigate(firstQuestionPath);
+                }
             };
 
         return {
