@@ -20,7 +20,9 @@
             <button class="button medium primary" data-bind="click: navigateNext, css: { disabled: isNavigationLocked }" data-translate-text="[next]" data-translate-title="[next]">Next</button>
             <!-- /ko -->
             <!-- ko ifnot: navigationContext.nextQuestionUrl -->
+            <!-- ko if: showBackToLearning -->
             <button class="button medium primary" data-bind="click: backToLearning">Back to Learning</button>
+            <!-- /ko -->
             <!-- /ko -->
         </div>
     </div>

@@ -1,5 +1,6 @@
 ﻿define([], function () {
     var viewModel = {
+        showBackToLearning: window.self !== window.top,
         backToLearning: backToLearning
     };
 

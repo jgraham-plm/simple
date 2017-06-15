@@ -38,6 +38,7 @@ define(['knockout', 'plugins/router', 'constants', 'modules/questionsNavigation'
             });
 
             this.hideTryAgain = false;
+	    this.showBackToLearning = window.self !== window.top;
         };
 
         QuestionContent.prototype.backToLearning = function () {
