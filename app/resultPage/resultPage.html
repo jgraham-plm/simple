@@ -1,4 +1,4 @@
-<section>
+<section data-bind="blockBodyScroll: npsDialog.isVisible()">
     <div class="result-header">
         <div class="course-title">
             <span class="course-label" data-translate-text="[course]"></span>
@@ -77,4 +77,7 @@
             <span class="finish-course-layout-loader-text" data-translate-text="[tracking and tracing reporting progress]">reporting progress...</span>
         </div>
     </div>
+    <!-- ko if: npsDialog.isVisible -->
+    <!-- ko compose: { view: 'dialogs/nps/nps', model: 'dialogs/nps/nps', activationData: { close: npsDialog.hide, callbacks: npsDialog.callbacks } } --><!-- /ko -->
+    <!-- /ko -->
 </section>

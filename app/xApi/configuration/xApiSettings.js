@@ -20,11 +20,11 @@
             defaultLanguage: "en-US",
             xApiVersion: "1.0.0",
 
-
-            init: init
+            initxApi: initxApi,
+            initNps: initNps
         };
 
-        var host = window.location.host;
+
         var lrsHost = publishSettings.defaultLRSUrl || 'reports.easygenerator.com';
 
         var defaultXapi = {
@@ -39,16 +39,32 @@
             allowedVerbs: ['started', 'stopped', 'experienced', 'mastered', 'answered', 'passed', 'failed', 'progressed']
         };
 
+        var npsHost = publishSettings.defaultNpsUrl || 'nps.easygenerator.com';
+
+        var defaultNps = {
+            nps: {
+                uri: '//' + npsHost + '/xApi/statements',
+                authenticationRequired: false,
+                credentials: {
+                    username: '',
+                    password: ''
+                }
+            }
+        };
+
         return settings;
 
-        function init(templateSettings) {
-            return Q.fcall(function () {
-                $.extend(settings.xApi, templateSettings);
+        function initxApi(templateSettings) {
+            $.extend(settings.xApi, templateSettings);
 
-                if (templateSettings.selectedLrs == 'default') {
-                    $.extend(settings.xApi, defaultXapi);
-                }
-            });
+            if (templateSettings.selectedLrs == 'default') {
+                $.extend(settings.xApi, defaultXapi);
+            }
         }
+
+        function initNps() {
+            $.extend(settings.xApi, defaultNps);
+        }
+
     }
 );

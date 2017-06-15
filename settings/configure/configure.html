@@ -73,6 +73,24 @@
                             </div>
                             <div class="preview-disabled" data-bind="visible: !allowCrossDeviceSaving()"></div>
                         </div>
+                         <div class="settings-row">
+                            <div class="settings-caption">
+                                <div data-bind="localize: 'conduct learner satisfaction survey'"></div>
+                            </div>
+                            <div class="settings-column">
+                                <div class="switcher">
+                                    <div class="switcher-text" data-bind="css: { disabled: nps.enabled() }, localize: 'forbid'"></div>
+                                    <div class="switch-toggle-slider" data-bind="switchToggle: { value: nps.enabled }">
+                                        <div class="switch-toggle-wrapper">
+                                            <div class="switch-toggle-on"></div>
+                                            <div class="switch-toogle-blob"></div>
+                                            <div class="switch-toggle-off"></div>
+                                        </div>
+                                    </div>
+                                    <div class="switcher-text" data-bind="css: { disabled: !nps.enabled() }, localize: 'allow'"></div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="settings-row">
                             <div class="settings-caption" data-bind="localize: 'pdf export'"></div>
                             <div class="settings-content">

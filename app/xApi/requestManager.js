@@ -1,28 +1,65 @@
 ﻿define(['./configuration/xApiSettings', './base64', './errorsHandler'],
     function (xApiSettings, base64, errorsHandler) {
 
+        var states = {
+            notInitialized: 0,
+            initialized: 1,
+            initializationFailed: 2
+        };
+
+        var state = states.notInitialized;
+
         var eventManager = {
-            requestQueue: [],
             init: init,
             sendStatement: sendStatement
         };
         return eventManager;
 
         function init() {
-            return Q.fcall(function () {
-                initXDomainRequestTransport();
-            });
+            var dfd = Q.defer();
+            switch (state) {
+                case states.notInitialized:
+                    var initPromise = Q.fcall(function () {
+                        try {
+                            initXDomainRequestTransport();
+                            state = states.initialized;
+                        } catch (e) {
+                            state = states.initializationFailed;
+                            throw e;
+                        };
+                    });
+
+                    dfd.resolve(initPromise);
+                    break;
+                case states.initialized:
+                    dfd.resolve();
+                    break;
+                case states.initializationFailed:
+                    dfd.reject();
+                    break;
+            }
+
+            return dfd.promise;
         }
 
-        function sendStatement(statement) {
-            return Q.fcall(function () {
-                var request = createRequest(statement);
+        function sendStatement(statement, uri, username, password) {
+            var dfd = Q.defer();
 
-                if (!$.support.cors) {
-                    request = getOptionsForIEMode(request);
-                }
-                return $.ajax(request);
+            var requestOptions = createRequestOptions(statement, uri, username, password);
+
+            if (!$.support.cors) {
+                requestOptions = getOptionsForIEMode(requestOptions);
+            }
+
+            $.ajax(requestOptions).done(function () {
+                dfd.resolve();
+            })
+            .fail(function (request, textStatus, error) {
+                dfd.reject(getErrorMessage(request, textStatus, error));
             });
+
+
+            return dfd.promise;
         }
 
         function initXDomainRequestTransport() {
@@ -123,23 +160,7 @@
             return options;
         }
 
-        function createRequest(statement) {
-            var lrsUrl = xApiSettings.xApi.lrs.uri;
-
-            if (lrsUrl.indexOf("/statements") === -1)
-                lrsUrl = lrsUrl + "/statements";
-
-            var userName = '';
-            var password = '';
-
-            if (xApiSettings.xApi.lrs.authenticationRequired) {
-                userName = xApiSettings.xApi.lrs.credentials.username;
-                password = xApiSettings.xApi.lrs.credentials.password;
-            } else {
-                userName = xApiSettings.anonymousCredentials.username;
-                password = xApiSettings.anonymousCredentials.password;
-            }
-
+        function createRequestOptions(statement, url, userName, password) {
             var headers = [];
             headers["X-Experience-API-Version"] = xApiSettings.xApiVersion;
             headers["Content-Type"] = "application/json";
@@ -148,7 +169,7 @@
 
             var options = {};
 
-            options.url = lrsUrl;
+            options.url = url;
             options.data = JSON.stringify(statement);
             options.type = 'POST';
             options.headers = headers;
@@ -164,39 +185,36 @@
                 options.headers = null;
             };
 
-            options.success = function (response) {
-            };
-
-            options.error = function (request, textStatus, error) {
-                switch (request.status) {
-                    case 0:
-                        error = errorsHandler.errors.invalidEndpoint;
-                        break;
-                    case 400:
-                        if (request.responseText.indexOf("Mbox") !== -1) {
-                            error = errorsHandler.errors.invalidEmail;
-                        } else if (request.responseText.indexOf("URL") !== -1 || request.responseText.indexOf("endpoint") !== -1) {
-                            error = errorsHandler.errors.invalidEndpoint;
-                        } else {
-                            error = errorsHandler.errors.badRequest + request.responseText;
-                        }
-
-                        break;
-                    case 401:
-                        error = errorsHandler.errors.invalidCredentials;
-                        break;
-                    case 404:
-                        error = errorsHandler.errors.notFoundEndpoint;
-                        break;
-                    default:
-                        error = errorsHandler.errors.unhandledMessage + request.statusText;
-                        break;
-                }
-
-                errorsHandler.handleError(error);
-            };
-
             return options;
+        }
+
+        function getErrorMessage(request, textStatus, error) {
+            switch (request.status) {
+                case 0:
+                    error = errorsHandler.errors.invalidEndpoint;
+                    break;
+                case 400:
+                    if (request.responseText.indexOf("Mbox") !== -1) {
+                        error = errorsHandler.errors.invalidEmail;
+                    } else if (request.responseText.indexOf("URL") !== -1 || request.responseText.indexOf("endpoint") !== -1) {
+                        error = errorsHandler.errors.invalidEndpoint;
+                    } else {
+                        error = errorsHandler.errors.badRequest + request.responseText;
+                    }
+
+                    break;
+                case 401:
+                    error = errorsHandler.errors.invalidCredentials;
+                    break;
+                case 404:
+                    error = errorsHandler.errors.notFoundEndpoint;
+                    break;
+                default:
+                    error = errorsHandler.errors.unhandledMessage + request.statusText;
+                    break;
+            }
+
+            return error;
         }
     }
 );

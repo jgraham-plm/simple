@@ -4,6 +4,7 @@
     app.LanguagesModel = LanguagesModel;
     app.MasteryScore = MasteryScore;
     app.PdfExport = PdfExport;
+    app.Nps = Nps;
 
     function PdfExport(pdfExportSettings) {
         var that = this;
@@ -18,6 +19,28 @@
             }
 
             that.enabled(pdfExportSettings.enabled);
+        }
+
+        function getData() {
+            return {
+                enabled: that.enabled()
+            }
+        }
+    }
+
+    function Nps(npsSettings) {
+        var that = this;
+
+        that.enabled = ko.observable(false);
+        that.getData = getData;
+        init(npsSettings);
+
+        function init(npsSettings) {
+            if (!npsSettings) {
+                return;
+            }
+
+            that.enabled(npsSettings.enabled);
         }
 
         function getData() {

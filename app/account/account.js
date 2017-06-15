@@ -87,6 +87,7 @@ define(['plugins/router', 'context', './header/index', './socialNetworks/index',
             if(viewmodel.requestProcessing()){
                 return;
             }
+
             xApiInitializer.deactivate();
             guardRoute.skipLoginGuard();
             if (!accessLimiter.userHasAccess({ email: viewmodel.email() })) {

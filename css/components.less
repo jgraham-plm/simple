@@ -1,0 +1,48 @@
+/*#region rating-control */
+
+.rating-control {
+    text-align: center;
+
+    .rating-container {
+        .rating-item {
+            display: inline-block;
+
+            .rating-item-btn {
+                display: inline-block;
+
+                width: 40px;
+                height: 40px;
+                padding: 7px 0;
+
+                cursor: pointer;
+
+                border-width: 1px;
+                border-style: solid;
+                border-radius: 3px;
+                box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .2);
+
+                font-size: 16px;
+                
+                &.highlighted {
+                    box-shadow: 0 3px 5px 0 rgba(0, 0, 0, .2);
+                }
+
+                &:focus {
+                    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, .2);
+                }
+
+                &.checked,
+                &:active {
+                    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .2), inset 0 1px 3px 0 rgba(0, 0, 0, .3);
+                }
+            }
+
+            & + .rating-item {
+                margin-left: 12px;
+            }
+        }
+    }
+}
+
+
+/*#endregion */

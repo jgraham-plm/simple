@@ -1615,12 +1615,61 @@ body {
     color: fade(@text-color, 70%);
 }
 
-
-
 /*region Media editor audio*/
 .audio-editor {
     > div {
         border-color: fade(@Normal-color, 10%);
     }
 }
-/*#endregion*/
+
+.rating-control {
+
+    .rating-container {
+
+        .rating-item-btn {
+            background-color: tint(@main-color, 10%);
+            border-color: tint(@main-color, 10%);
+            color: @button-text-color;
+
+            &.highlighted, &:focus {
+                background-color: @main-color;
+                border-color: rgba(0, 0, 0, 0.1);
+            }
+
+            &.checked {
+                background-color: @main-color;
+                border-color: rgba(0, 0, 0, 0.1);
+            }
+        }
+    }
+}
+
+/*@text-color: #42515f;
+@main-color: #43aaa3;
+@secondary-color: #2d9ec6;
+@button-text-color: #fff;
+@content-body-color: #fff;
+@correct-color: #4caf50;
+@incorrect-color: #f16162;*/
+
+.fullscreen-popup-container{
+    background-color: fade(@content-body-color, 98%);
+    .fp-content-row{
+
+        .fp-content-cell{
+
+            .fp-content{
+                .fp-rating-container{
+                    .fp-rating-tips{
+                        .fp-rating-tip{
+                            color: fade(@text-color, 50%);
+                        }
+                    }
+                }
+                hr{
+                    background-color: fade(@text-color, 10%);
+                }
+            }
+        }
+    }
+}

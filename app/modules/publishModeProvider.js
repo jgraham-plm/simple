@@ -1,4 +1,4 @@
-﻿define(['includedModules/modulesInitializer', 'templateSettings'], function (modulesInitializer, templateSettings) {
+﻿define(['includedModules/modulesInitializer', 'templateSettings'], function(modulesInitializer, templateSettings) {
 
     "use strict";
 
@@ -24,6 +24,7 @@
         if (viewmodel.isPreview || viewmodel.isReview) {
             templateSettings.allowCrossDeviceSaving = false;
             templateSettings.xApi.enabled = false;
+            templateSettings.nps.enabled = false;
         }
     }
 

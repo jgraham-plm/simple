@@ -1,7 +1,7 @@
 ﻿define(['eventManager', 'constants'],
-    function (eventManager, constants) {
+    function(eventManager, constants) {
 
-        var ctor = function (spec) {
+        var ctor = function(spec) {
 
             var course = {
                 id: spec.id,
@@ -16,12 +16,12 @@
                 isFinished: false
             }
 
-            var affectProgressSections = _.filter(course.sections, function (section) {
+            var affectProgressSections = _.filter(course.sections, function(section) {
                 return section.affectProgress;
             });
 
-            course.score = function () {
-                var result = _.reduce(affectProgressSections, function (memo, section) {
+            course.score = function() {
+                var result = _.reduce(affectProgressSections, function(memo, section) {
                     return memo + section.score();
                 }, 0);
 
@@ -29,17 +29,17 @@
                 return sectionsLength == 0 ? 0 : Math.floor(result / sectionsLength);
             };
 
-            course.result = function () {
+            course.result = function() {
                 return course.score() / 100;
             }
 
-            course.isCompleted = function () {
-                return !_.some(affectProgressSections, function (section) {
+            course.isCompleted = function() {
+                return !_.some(affectProgressSections, function(section) {
                     return !section.isCompleted();
                 });
             };
 
-            course.getStatus = function () {
+            course.getStatus = function() {
                 if (!course.isFinished) {
                     return constants.course.statuses.inProgress;
                 }
@@ -47,15 +47,25 @@
                 return course.isCompleted() ? constants.course.statuses.completed : constants.course.statuses.failed;
             };
 
-            course.finish = function (callback) {
+            course.finish = function(callback) {
                 course.isFinished = true;
-                eventManager.courseFinished(course, function () {
-                    eventManager.courseFinalized(function() {
-                        eventManager.turnAllEventsOff();
-                        callback();
-                    });
+                eventManager.courseFinished(course, function() {
+                    callback();
                 });
             };
+
+            course.finalize = function(callback) {
+                eventManager.courseFinalized(function() {
+                    eventManager.turnAllEventsOff();
+                    if (callback) {
+                        callback();
+                    }
+                });
+            }
+
+            course.evaluate = function(score, callbacks) {
+                eventManager.courseEvaluated(score, callbacks);
+            }
 
             return course;
         };

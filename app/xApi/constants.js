@@ -49,6 +49,12 @@
                 display: {
                     "en-US": "progressed"
                 }
+            },
+            evaluated: {
+                id: "http://www.tincanapi.co.uk/verbs/evaluated",
+                display: {
+                    "en-US": "evaluated"
+                }
             }
         };
 

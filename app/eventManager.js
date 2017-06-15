@@ -6,6 +6,7 @@
                 courseStarted: "courseStarted",
                 courseFinished: "courseFinished",
                 courseFinalized: "courseFinalized",
+                courseEvaluated: 'courseEvaluated',
                 answersSubmitted: "answersSubmitted",
                 learningContentExperienced: "learningContentExperienced"
             },
@@ -36,6 +37,13 @@
                 app.trigger(events.courseStarted, data);
             },
 
+            courseEvaluated = function (data, callbacks) {
+                if (!_.isObject(callbacks))
+                    callbacks = {};
+
+                return executeAfterSubscribersDone(events.courseEvaluated, data, callbacks.success, callbacks.fail, callbacks.fin);
+            },
+
             courseFinished = function (data, callback) {
                 return executeAfterSubscribersDone(events.courseFinished, data, callback);
             },
@@ -52,11 +60,11 @@
                 app.trigger(events.learningContentExperienced, data, spentTime);
             },
             
-            executeAfterSubscribersDone = function (event, eventData, callback) {
+            executeAfterSubscribersDone = function (event, eventData, successCallback, failCallback, finCallback) {
                 if (_.isNullOrUndefined(app.callbacks) || _.isNullOrUndefined(app.callbacks[event])) {
                     return Q.fcall(function () {
-                        if (_.isFunction(callback)) {
-                            callback();
+                        if (_.isFunction(successCallback)) {
+                            successCallback();
                         }
                     });
                 }
@@ -73,8 +81,16 @@
                 });
 
                 return Q.all(promises).then(function () {
-                    if (_.isFunction(callback)) {
-                        callback();
+                    if (_.isFunction(successCallback)) {
+                        successCallback();
+                    }
+                }).fail(function (reason) {
+                    if (_.isFunction(failCallback)) {
+                        failCallback(reason);
+                    }
+                }).fin(function() {
+                    if (_.isFunction(finCallback)) {
+                        finCallback();
                     }
                 });
             };
@@ -88,6 +104,7 @@
             courseStarted: courseStarted,
             courseFinished: courseFinished,
             courseFinalized: courseFinalized,
+            courseEvaluated: courseEvaluated,
             answersSubmitted: answersSubmitted,
             learningContentExperienced: learningContentExperienced
         };

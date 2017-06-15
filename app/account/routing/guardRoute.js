@@ -23,6 +23,7 @@ define(['plugins/router', 'underscore', 'templateSettings', 'userContext', '../l
                 var user = userContext.getCurrentUser(),
                     accessLimitationEnabled = accessLimiter.accessLimitationEnabled(),
                     xapiEnabled = templateSettings.xApi.enabled,
+                    npsEnabled = templateSettings.nps.enabled,
                     allowCrossDeviceSaving = templateSettings.allowCrossDeviceSaving,
                     currentRoute = route.config.route;
                     
@@ -39,7 +40,7 @@ define(['plugins/router', 'underscore', 'templateSettings', 'userContext', '../l
                         return accessLimiter.userHasAccess({email:userContext.user.email});
                     }
 
-                if (!userContext.user.email && !loginGuardSkipped && (xapiEnabled || allowCrossDeviceSaving || accessLimitationEnabled)) {
+                if (!userContext.user.email && !loginGuardSkipped && (xapiEnabled || npsEnabled || allowCrossDeviceSaving || accessLimitationEnabled)) {
                     return guardViewUrl(route, loginGuardView);
                 }
 

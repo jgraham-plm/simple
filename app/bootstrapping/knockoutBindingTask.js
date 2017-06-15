@@ -29,6 +29,7 @@ define([
     'bootstrapping/knockoutBindings/copyToClipboardBinding',
     'bootstrapping/knockoutBindings/changeCssClassByDelayBinding',
     'bootstrapping/knockoutBindings/containImageBinding',
+    'bootstrapping/knockoutBindings/lessColorBinding',
     'viewmodels/questions/dragAndDrop/bindingHandlers/draggableTextBindingHandler',
     'viewmodels/questions/dragAndDrop/bindingHandlers/draggableTextContainerBindingHandler',
     'viewmodels/questions/dragAndDrop/bindingHandlers/dropspotBindingHandler',
@@ -41,7 +42,8 @@ define([
     'viewmodels/questions/singleSelectImage/bindingHandlers/previewImageBinding',
     'widgets/imagePreview/bindingHandlers/fadeBindingHandler',
     'widgets/imagePreview/bindingHandlers/imageLoaderBindingHandler',
-    'dialogs/bindingHandlers/blockBodyScrollBinding'
+    'dialogs/bindingHandlers/blockBodyScrollBinding',
+    'dialogs/bindingHandlers/ratingBindingHandler'
 ], function () {
 
     return {

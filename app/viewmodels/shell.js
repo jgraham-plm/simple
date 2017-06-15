@@ -64,12 +64,13 @@ define([
                 .then(initializeProgressProvider)
                 .then(initxApi)
                 .then(initApp)
-                .then(initRouter);
+                .then(initRouter)
+                .catch(function (e) {
+                    console.error(e);
+                });
 
             function initxApi() {
-                if (templateSettings.xApi.enabled) {
-                    return xApiInitializer.initialize(templateSettings.xApi);
-                }
+                return xApiInitializer.initialize(templateSettings.xApi, templateSettings.nps);
             }
 
             function initializeProgressProvider() {

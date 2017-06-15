@@ -13,6 +13,7 @@
         'general settings': 'General Settings',
         'pdf export': 'PDF export (experimental):',
         'show download as pdf button': 'Show button "Download course in PDF format"',
+        'conduct learner satisfaction survey': 'Conduct learner satisfaction survey',
 
         //results tracking tab
         'results tracking': 'Results Tracking',

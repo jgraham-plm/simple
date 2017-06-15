@@ -11,6 +11,7 @@
         masteryScore: null,
         languages: null,
         pdfExport: null,
+        nps: null,
         showConfirmationPopup: ko.observable(true),
         allowContentPagesScoring: ko.observable(false),
         allowCrossDeviceSaving: ko.observable(true),
@@ -21,6 +22,7 @@
     viewModel.getCurrentSettingsData = function (settings) {
         return $.extend({}, settings || currentSettings, {
             pdfExport: viewModel.pdfExport.getData(),
+            nps: viewModel.nps.getData(),
             xApi: viewModel.trackingData.getData(),
             masteryScore: viewModel.masteryScore.getData(),
             languages: viewModel.languages.getData(),
@@ -61,7 +63,8 @@
 
             var defaultTemplateSettings = manifest && manifest.defaultTemplateSettings ? manifest.defaultTemplateSettings : {};
           
-            viewModel.pdfExport = new app.PdfExport(settings.pdfExport || defaultTemplateSettings.pdfExport);           
+            viewModel.pdfExport = new app.PdfExport(settings.pdfExport || defaultTemplateSettings.pdfExport);     
+            viewModel.nps = new app.Nps(settings.nps || defaultTemplateSettings.nps);           
             viewModel.masteryScore = new app.MasteryScore(settings.masteryScore || defaultTemplateSettings.masteryScore);      
             viewModel.trackingData = new app.TrackingDataModel(settings.xApi || defaultTemplateSettings.xApi);
 

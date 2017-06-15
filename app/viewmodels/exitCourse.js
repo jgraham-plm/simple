@@ -1,9 +1,9 @@
 ﻿define([
     'durandal/app', 'windowOperations', 'repositories/courseRepository', 'progressContext',
     'plugins/router', 'templateSettings', 'constants',
-    'xApi/xApiInitializer', 'includedModules/modulesInitializer', 'context', 'modules/publishModeProvider'
+    'xApi/xApiInitializer', 'includedModules/modulesInitializer', 'context', 'modules/publishModeProvider','dialogs/dialog'
 ], function(app, windowOperations, courseRepository, progressContext, router, templateSettings,
-    constants, xApiInitializer, modulesInitializer, context, publishModeProvider) {
+    constants, xApiInitializer, modulesInitializer, context, publishModeProvider, Dialog) {
     "use strict";
 
     var progressStatuses = constants.progressContext.statuses;
@@ -29,7 +29,7 @@
         activate: activate
     };
 
-    viewModel.continueLaterPopup = new Popup();
+    viewModel.continueLaterPopup = new Dialog();
 
     viewModel.continueLaterPopup.actions = {
         close: viewModel.continueLaterPopup.hide,
@@ -57,7 +57,7 @@
     function activate(type) {
         viewModel.score = context.course.score;
         viewModel.type(type);
-        viewModel.xAPIEnabled = xApiInitializer.isActivated();
+        viewModel.xAPIEnabled = xApiInitializer.isLrsReportingInitialized;
         viewModel.scormEnabled = publishModeProvider.isScormEnabled;
         viewModel.hideFinishActionButtons = templateSettings.hideFinishActionButtons;
     }
@@ -72,23 +72,6 @@
         }
 
         windowOperations.close();
-    }
-
-    function Popup() {
-        var that = this;
-        this.actions = {};
-        this.isVisible = ko.observable(false);
-        this.show = function() {
-            if (router.isNavigationLocked()) {
-                return;
-            }
-
-            that.isVisible(true);
-        };
-
-        this.hide = function() {
-            that.isVisible(false);
-        };
     }
 
 });
