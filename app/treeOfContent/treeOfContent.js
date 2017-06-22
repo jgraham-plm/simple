@@ -1,5 +1,5 @@
-﻿define(['repositories/courseRepository', 'treeOfContent/treeNodes/SectionTreeNode', 'plugins/router', 'treeOfContent/utils/screenResolutionChecker'],
-function (courseRepository, SectionTreeNode, router, screenResolutionChecker) {
+﻿define(['repositories/courseRepository', 'treeOfContent/treeNodes/SectionTreeNode', 'plugins/router', 'treeOfContent/utils/screenResolutionChecker', 'plmUtils'],
+function (courseRepository, SectionTreeNode, router, screenResolutionChecker, plmUtils) {
     var viewModel = {
         children: [],
         hasChildren: false,
@@ -13,12 +13,18 @@ function (courseRepository, SectionTreeNode, router, screenResolutionChecker) {
         activate: activate,
         deactivate: deactivate,
         initializeRoute: initializeRoute,
-        activateQuestion: activateQuestion
+        activateQuestion: activateQuestion,
+        showSectionsHeader: ko.observable()
     };
 
     return viewModel;
 
     function activate() {
+        var self = this;
+        plmUtils.getShowSectionsHeaderSetting().then(function (showSectionsHeader) {
+            self.showSectionsHeader(showSectionsHeader);
+        });
+
         viewModel.children = _.chain(courseRepository.get().sections)
                 .map(function (section) {
                     var treeNode = new SectionTreeNode(section.id, section.title);

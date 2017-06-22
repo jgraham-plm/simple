@@ -5,12 +5,14 @@ define(['underscore'], function (_) {
 
     var SETTINGS = {
         BACK_TO_LEARNING_BUTTON_LABEL: 'back_to_learning_button_label',
-        SHOW_COPYRIGHT: 'show_copyright'
+        SHOW_COPYRIGHT: 'show_copyright',
+        SHOW_SECTIONS_HEADER: 'show_sections_header'
     };
 
     var DEFAULT_SETTINGS = {};
     DEFAULT_SETTINGS[SETTINGS.BACK_TO_LEARNING_BUTTON_LABEL] = 'Done';
     DEFAULT_SETTINGS[SETTINGS.SHOW_COPYRIGHT] = true;
+    DEFAULT_SETTINGS[SETTINGS.SHOW_SECTIONS_HEADER] = true;
 
     function getSettings () {
         var dfd = Q.defer();
@@ -50,6 +52,10 @@ define(['underscore'], function (_) {
 
         getShowCopyrightSetting: function () {
             return getSetting(SETTINGS.SHOW_COPYRIGHT);
+        },
+
+        getShowSectionsHeaderSetting: function () {
+            return getSetting(SETTINGS.SHOW_SECTIONS_HEADER);
         },
 
 	showBackToLearning: window.self !== window.top,
