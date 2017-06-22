@@ -5,12 +5,14 @@ define(['underscore'], function (_) {
 
     var SETTINGS = {
         BACK_TO_LEARNING_BUTTON_LABEL: 'back_to_learning_button_label',
+        ERROR_PAGE_BUTTON_LABEL: 'error_page_button_label',
         SHOW_COPYRIGHT: 'show_copyright',
         SHOW_SECTIONS_HEADER: 'show_sections_header'
     };
 
     var DEFAULT_SETTINGS = {};
     DEFAULT_SETTINGS[SETTINGS.BACK_TO_LEARNING_BUTTON_LABEL] = 'Done';
+    DEFAULT_SETTINGS[SETTINGS.ERROR_PAGE_BUTTON_LABEL] = 'Back';
     DEFAULT_SETTINGS[SETTINGS.SHOW_COPYRIGHT] = true;
     DEFAULT_SETTINGS[SETTINGS.SHOW_SECTIONS_HEADER] = true;
 
@@ -46,8 +48,12 @@ define(['underscore'], function (_) {
 
         getSettings: getSettings,
 
-        getBackButtonLabel: function () {
+        getBackToLearningButtonLabel: function () {
             return getSetting(SETTINGS.BACK_TO_LEARNING_BUTTON_LABEL);
+        },
+
+        getErrorPageButtonLabel: function() {
+            return getSetting(SETTINGS.ERROR_PAGE_BUTTON_LABEL);
         },
 
         getShowCopyrightSetting: function () {

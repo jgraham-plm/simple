@@ -2,15 +2,15 @@
 
     var activate = function () {
         var self = this;
-        plmUtils.getBackButtonLabel().finally(function (label) {
-            self.backToLearningButtonLabel(label);
+        plmUtils.getErrorPageButtonLabel().then(function (label) {
+            self.buttonLabel(label);
         });
     };
 
     var viewModel = {
         showBackToLearning: plmUtils.showBackToLearning,
         backToLearning: plmUtils.backToLearning,
-        backToLearningButtonLabel: ko.observable(''),
+        buttonLabel: ko.observable(''),
         activate: activate
     };
 
