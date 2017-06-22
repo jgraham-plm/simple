@@ -15,7 +15,7 @@ define(['knockout', 'plugins/router', 'constants', 'modules/questionsNavigation'
             this.isExpanded = ko.observable(true);
             this.isPreview = false;
             this.isSurvey = false;
-            this.copyright = templateSettings.copyright;
+            this.copyright = ko.observable();
 
             this.learningContents = [];
             this.correctFeedback = ko.observable(null);
@@ -78,6 +78,12 @@ define(['knockout', 'plugins/router', 'constants', 'modules/questionsNavigation'
                 return;
             }
 
+            var self = this;
+            plmUtils.getSettings().then(function (settings) {
+                self.backToLearningButtonLabel(settings[plmUtils.SETTINGS.BACK_TO_LEARNING_BUTTON_LABEL]);
+                self.copyright(settings[plmUtils.SETTINGS.SHOW_COPYRIGHT] && templateSettings.copyright);
+            });
+
             this.sectionId = sectionId;
             this.question = question;
             this.isPreview = _.isUndefined(isPreview) ? false : isPreview;
@@ -97,11 +103,6 @@ define(['knockout', 'plugins/router', 'constants', 'modules/questionsNavigation'
             this.submitViewModel = this.activeQuestionViewModel.customSubmitViewModel || '';
 
             this.hideTryAgain = templateSettings.hideTryAgain;
-
-            var self = this;
-            plmUtils.getBackButtonLabel().then(function (label) {
-                self.backToLearningButtonLabel(label);
-            });
 
             if (isPreview) {
                 return this.question.loadContent().then(function(){

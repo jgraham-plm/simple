@@ -1,5 +1,5 @@
-﻿define(['durandal/app', 'context', 'repositories/courseRepository', 'plugins/router', 'plugins/http', 'templateSettings'],
-    function (app, context, repository, router, http, templateSettings) {
+﻿define(['durandal/app', 'knockout', 'context', 'repositories/courseRepository', 'plugins/router', 'plugins/http', 'templateSettings', 'plmUtils'],
+    function (app, ko, context, repository, router, http, templateSettings, plmUtils) {
 
         var getFirstQuestionPath = function () {
 	    var course = repository.get();
@@ -11,7 +11,7 @@
 
         var courseTitle = null,
             content = null,
-            copyright = templateSettings.copyright,
+            copyright = ko.observable(),
 
             canActivate = function () {
                 if (context.course.hasIntroductionContent == false) {
@@ -22,6 +22,11 @@
 
             activate = function () {
                 this.courseTitle = context.course.title;
+
+                var self = this;
+                plmUtils.getShowCopyrightSetting().then(function (showCopyright) {
+                    self.copyright(showCopyright && templateSettings.copyright);
+                });
 
                 var that = this;
                 return Q.fcall(function () {

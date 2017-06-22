@@ -5,7 +5,7 @@
         title: null,
         learningContents: null,
         navigateNext: navigateNext,
-        copyright: templateSettings.copyright,
+        copyright: ko.observable(),
         activate: activate,
         isNavigationLocked: router.isNavigationLocked,
 
@@ -27,8 +27,9 @@
 
     function activate(sectionId, question) {
         var self = this;
-        plmUtils.getBackButtonLabel().then(function (label) {
-            self.backToLearningButtonLabel(label);
+        plmUtils.getSettings().then(function (settings) {
+            self.backToLearningButtonLabel(settings[plmUtils.SETTINGS.BACK_TO_LEARNING_BUTTON_LABEL]);
+            self.copyright(settings[plmUtils.SETTINGS.SHOW_COPYRIGHT] && templateSettings.copyright);
         });
 
         return Q.fcall(function () {
