@@ -12,10 +12,8 @@
             <!-- ko if: navigationContext.nextQuestionUrl -->
             <button class="button medium primary autofocus" data-bind="click: navigateNext, css: { disabled: isNavigationLocked }" data-translate-text="[next]" data-translate-title="[next]">Next</button>
             <!-- /ko -->
-            <!-- ko ifnot: navigationContext.nextQuestionUrl -->
-            <!-- ko if: showBackToLearning -->
-            <button class="button medium primary autofocus" data-bind="click: backToLearning">Back to Learning</button>
-            <!-- /ko -->
+            <!-- ko if: !navigationContext.nextQuestionUrl && showBackToLearning -->
+            <button class="button medium primary autofocus" data-bind="click: backToLearning, text: backToLearningButtonLabel"></button>
             <!-- /ko -->
         </div>
     </div>
@@ -30,10 +28,8 @@
             <!-- ko if: navigationContext.nextQuestionUrl -->
             <button class="button medium primary autofocus" data-bind="click: navigateNext, css: { disabled: isNavigationLocked }" data-translate-text="[next]" data-translate-title="[next]">Next</button>
             <!-- /ko -->
-            <!-- ko ifnot: navigationContext.nextQuestionUrl -->
-            <!-- ko if: showBackToLearning -->
-            <button class="button medium primary autofocus" data-bind="click: backToLearning">Back to Learning</button>
-            <!-- /ko -->
+            <!-- ko if: !navigationContext.nextQuestionUrl && showBackToLearning -->
+            <button class="button medium primary autofocus" data-bind="click: backToLearning, text: backToLearningButtonLabel"></button>
             <!-- /ko -->
         <!-- /ko -->
         <!-- ko ifnot: hideTryAgain -->
@@ -41,10 +37,8 @@
             <!-- ko if: navigationContext.nextQuestionUrl -->
             <button class="button medium default" data-bind="click: navigateNext, css: { disabled: isNavigationLocked }" data-translate-text="[next]" data-translate-title="[next]">Next</button>
             <!-- /ko -->
-            <!-- ko ifnot: navigationContext.nextQuestionUrl -->
-            <!-- ko if: showBackToLearning -->
-            <button class="button medium default" data-bind="click: backToLearning">Back to Learning</button>
-            <!-- /ko -->
+            <!-- ko if: !navigationContext.nextQuestionUrl && showBackToLearning -->
+            <button class="button medium default" data-bind="click: backToLearning, text: backToLearningButtonLabel"></button>
             <!-- /ko -->
         <!-- /ko -->
         </div>

@@ -1,16 +1,17 @@
-﻿define(['modules/questionsNavigation', 'plugins/router', 'templateSettings'], function (navigationModule, router, templateSettings) {
+﻿define(['knockout', 'modules/questionsNavigation', 'plugins/router', 'templateSettings', 'plmUtils'], function (ko, navigationModule, router, templateSettings, plmUtils) {
     "use strict";
 
     var viewModel = {
         title: null,
         learningContents: null,
         navigateNext: navigateNext,
-	showBackToLearning: window.self !== window.top,
-        backToLearning: backToLearning,
-        copyright: templateSettings.copyright,
-
+        copyright: ko.observable(),
         activate: activate,
-        isNavigationLocked: router.isNavigationLocked
+        isNavigationLocked: router.isNavigationLocked,
+
+        showBackToLearning: plmUtils.showBackToLearning,
+        backToLearning: plmUtils.backToLearning,
+        backToLearningButtonLabel: ko.observable('')
     };
 
     return viewModel;
@@ -24,12 +25,13 @@
         router.navigate(nextUrl);
     }
 
-    function backToLearning() {
-        // Post a message for the PLM app.
-        window.parent.postMessage({name: 'backToLearning'}, '*');
-    }
-
     function activate(sectionId, question) {
+        var self = this;
+        plmUtils.getSettings().then(function (settings) {
+            self.backToLearningButtonLabel(settings[plmUtils.SETTINGS.BACK_TO_LEARNING_BUTTON_LABEL]);
+            self.copyright(settings[plmUtils.SETTINGS.SHOW_COPYRIGHT] && templateSettings.copyright);
+        });
+
         return Q.fcall(function () {
             viewModel.navigationContext = navigationModule.getNavigationContext(sectionId, question.id);
             viewModel.id = question.id;

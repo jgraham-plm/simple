@@ -1,13 +1,18 @@
-﻿define([], function () {
-    var viewModel = {
-        showBackToLearning: window.self !== window.top,
-        backToLearning: backToLearning
+﻿define(['knockout', 'plmUtils'], function (ko, plmUtils) {
+
+    var activate = function () {
+        var self = this;
+        plmUtils.getErrorPageButtonLabel().then(function (label) {
+            self.buttonLabel(label);
+        });
     };
 
-    function backToLearning() {
-        // Post a message for the PLM app.
-        window.parent.postMessage({name: 'backToLearning'}, '*');
-    }
+    var viewModel = {
+        showBackToLearning: plmUtils.showBackToLearning,
+        backToLearning: plmUtils.backToLearning,
+        buttonLabel: ko.observable(''),
+        activate: activate
+    };
 
     return viewModel;
 });

@@ -8,7 +8,9 @@
                 <button class="tree-of-content-header-btn menu" data-bind="click: toggleIsExpanded.bind($data)">
                     <i class="tree-of-content-header-btn-icon menu material-icons">menu</i>
                 </button>
+                <!-- ko if: showSectionsHeader -->
                 <div class="tree-of-content-header-title" data-translate-text="[sections]"></div>
+                <!-- /ko -->
                 <button class="tree-of-content-header-btn close" data-bind="click: toggleIsExpanded.bind($data)">
                     <i class="tree-of-content-header-btn-icon close material-icons">close</i>
                 </button>

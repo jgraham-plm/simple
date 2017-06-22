@@ -1,5 +1,5 @@
-define(['knockout', 'plugins/router', 'constants', 'modules/questionsNavigation', 'viewmodels/questions/questionsViewModelFactory', 'templateSettings'],
-    function (ko, router, constants, navigationModule, questionViewModelFactory, templateSettings) {
+define(['knockout', 'plugins/router', 'constants', 'modules/questionsNavigation', 'viewmodels/questions/questionsViewModelFactory', 'templateSettings', 'plmUtils'],
+    function (ko, router, constants, navigationModule, questionViewModelFactory, templateSettings, plmUtils) {
         "use strict";
 
         function QuestionContent() {
@@ -15,7 +15,7 @@ define(['knockout', 'plugins/router', 'constants', 'modules/questionsNavigation'
             this.isExpanded = ko.observable(true);
             this.isPreview = false;
             this.isSurvey = false;
-            this.copyright = templateSettings.copyright;
+            this.copyright = ko.observable();
 
             this.learningContents = [];
             this.correctFeedback = ko.observable(null);
@@ -38,13 +38,10 @@ define(['knockout', 'plugins/router', 'constants', 'modules/questionsNavigation'
             });
 
             this.hideTryAgain = false;
-	    this.showBackToLearning = window.self !== window.top;
+	    this.showBackToLearning = plmUtils.showBackToLearning;
+            this.backToLearning = plmUtils.backToLearning;
+            this.backToLearningButtonLabel = ko.observable('');
         };
-
-        QuestionContent.prototype.backToLearning = function () {
-            // Post a message for the PLM app.
-            window.parent.postMessage({name: 'backToLearning'}, '*');
-        }
 
         QuestionContent.prototype.submit = function() {
             var self = this;
@@ -81,6 +78,12 @@ define(['knockout', 'plugins/router', 'constants', 'modules/questionsNavigation'
                 return;
             }
 
+            var self = this;
+            plmUtils.getSettings().then(function (settings) {
+                self.backToLearningButtonLabel(settings[plmUtils.SETTINGS.BACK_TO_LEARNING_BUTTON_LABEL]);
+                self.copyright(settings[plmUtils.SETTINGS.SHOW_COPYRIGHT] && templateSettings.copyright);
+            });
+
             this.sectionId = sectionId;
             this.question = question;
             this.isPreview = _.isUndefined(isPreview) ? false : isPreview;
@@ -101,9 +104,7 @@ define(['knockout', 'plugins/router', 'constants', 'modules/questionsNavigation'
 
             this.hideTryAgain = templateSettings.hideTryAgain;
 
-            if(isPreview){
-                var self = this;
-
+            if (isPreview) {
                 return this.question.loadContent().then(function(){
                     return self.activeQuestionViewModel.initialize(self.question, isPreview);
                 });
