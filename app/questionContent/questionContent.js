@@ -1,4 +1,4 @@
-define(['knockout', 'plugins/router', 'constants', 'modules/questionsNavigation', 'viewmodels/questions/questionsViewModelFactory', 'templateSettings', 'plmUtils'],
+define(['knockout', 'plugins/router', 'constants', 'modules/questionsNavigation', 'viewmodels/questions/questionsViewModelFactory', 'templateSettings', 'lib/plmUtils'],
     function (ko, router, constants, navigationModule, questionViewModelFactory, templateSettings, plmUtils) {
         "use strict";
 

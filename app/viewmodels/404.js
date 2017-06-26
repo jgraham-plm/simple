@@ -1,4 +1,4 @@
-﻿define(['knockout', 'plmUtils'], function (ko, plmUtils) {
+﻿define(['knockout', 'lib/plmUtils'], function (ko, plmUtils) {
 
     var activate = function () {
         var self = this;

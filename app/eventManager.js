@@ -1,4 +1,4 @@
-﻿define(['durandal/app', 'plmUtils'],
+﻿define(['durandal/app', 'lib/plmUtils'],
     function (app, plmUtils) {
 
         var

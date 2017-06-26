@@ -1,4 +1,4 @@
-﻿define(['knockout', 'modules/questionsNavigation', 'plugins/router', 'templateSettings', 'plmUtils'], function (ko, navigationModule, router, templateSettings, plmUtils) {
+﻿define(['knockout', 'modules/questionsNavigation', 'plugins/router', 'templateSettings', 'lib/plmUtils'], function (ko, navigationModule, router, templateSettings, plmUtils) {
     "use strict";
 
     var viewModel = {

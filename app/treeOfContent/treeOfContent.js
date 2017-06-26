@@ -1,4 +1,4 @@
-﻿define(['repositories/courseRepository', 'treeOfContent/treeNodes/SectionTreeNode', 'plugins/router', 'treeOfContent/utils/screenResolutionChecker', 'plmUtils'],
+﻿define(['repositories/courseRepository', 'treeOfContent/treeNodes/SectionTreeNode', 'plugins/router', 'treeOfContent/utils/screenResolutionChecker', 'lib/plmUtils'],
 function (courseRepository, SectionTreeNode, router, screenResolutionChecker, plmUtils) {
     var viewModel = {
         children: [],
