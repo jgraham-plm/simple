@@ -67,10 +67,15 @@ define(['underscore', 'repositories/courseRepository'], function (_, courseRepos
 	showBackToLearning: window.self !== window.top,
 
         backToLearning: function () {
-            var course = courseRepository.get()
+            var course = courseRepository.get();
 
             // Post a message for the PLM app.
-            window.parent.postMessage({name: 'backToLearning', courseScore: course.score}, '*');
+            window.parent.postMessage({name: 'backToLearning', courseScore: course.score()}, '*');
+        },
+
+        handleCourseFinished: function () {
+            var course = courseRepository.get();
+            window.parent.postMessage({name: 'courseFinished', courseScore: course.score()}, '*');
         }
     };
 });

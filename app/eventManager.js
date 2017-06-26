@@ -1,5 +1,5 @@
-﻿define(['durandal/app'],
-    function (app) {
+﻿define(['durandal/app', 'plmUtils'],
+    function (app, plmUtils) {
 
         var
             events = {
@@ -45,6 +45,7 @@
             },
 
             courseFinished = function (data, callback) {
+                plmUtils.handleCourseFinished();
                 return executeAfterSubscribersDone(events.courseFinished, data, callback);
             },
 
