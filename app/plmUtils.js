@@ -75,7 +75,7 @@ define(['underscore', 'repositories/courseRepository'], function (_, courseRepos
 
         sendScore: function () {
             var course = courseRepository.get();
-            window.parent.postMessage({name: 'courseFinished', courseScore: course.score()}, '*');
+            window.parent.postMessage({name: 'score', courseScore: course.score()}, '*');
         }
     };
 });
