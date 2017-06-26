@@ -1,5 +1,5 @@
-﻿define(['durandal/system', 'durandal/app', 'plugins/router', 'eventManager', 'context', 'userContext', 'constants'],
-    function (system, app, router, eventManager, dataContext, userContext, constants) {
+﻿define(['durandal/system', 'durandal/app', 'plugins/router', 'eventManager', 'context', 'userContext', 'constants', 'plmUtils'],
+    function (system, app, router, eventManager, dataContext, userContext, constants, plmUtils) {
 
         var
             statuses = constants.progressContext.statuses,
@@ -26,6 +26,8 @@
         return context;
 
         function save() {
+            plmUtils.sendScore();
+
             if (!self.storage) {
                 return;
             }
@@ -73,6 +75,8 @@
         }
 
         function finish() {
+            plmUtils.sendScore();
+
             if (!self.storage) {
                 return;
             }

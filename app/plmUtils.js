@@ -1,4 +1,4 @@
-define(['underscore'], function (_) {
+define(['underscore', 'repositories/courseRepository'], function (_, courseRepository) {
     'use strict';
 
     var SETTINGS_PATH = 'https://s3.amazonaws.com/easy-generator-settings/plmSettings.json';
@@ -67,8 +67,15 @@ define(['underscore'], function (_) {
 	showBackToLearning: window.self !== window.top,
 
         backToLearning: function () {
+            var course = courseRepository.get();
+
             // Post a message for the PLM app.
-            window.parent.postMessage({name: 'backToLearning'}, '*');
+            window.parent.postMessage({name: 'backToLearning', courseScore: course.score()}, '*');
+        },
+
+        sendScore: function () {
+            var course = courseRepository.get();
+            window.parent.postMessage({name: 'score', courseScore: course.score()}, '*');
         }
     };
 });
