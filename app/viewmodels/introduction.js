@@ -1,4 +1,4 @@
-﻿define(['durandal/app', 'knockout', 'context', 'repositories/courseRepository', 'plugins/router', 'plugins/http', 'templateSettings', 'lib/plmUtils'],
+﻿define(['durandal/app', 'knockout', 'context', 'repositories/courseRepository', 'plugins/router', 'plugins/http', 'templateSettings', 'plmUtils'],
     function (app, ko, context, repository, router, http, templateSettings, plmUtils) {
 
         var getFirstQuestionPath = function () {
