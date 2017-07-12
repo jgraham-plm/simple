@@ -11,7 +11,7 @@ define([
     'bootstrapping/knockoutBindings/dropDownBinding',
     'bootstrapping/knockoutBindings/scrollTopBinding',
     'bootstrapping/knockoutBindings/scrollIntoViewBinding',
-    'bootstrapping/knockoutBindings/learningContentBinding',
+    'bootstrapping/knockoutBindings/contentBlockBinding',
     'bootstrapping/knockoutBindings/toolTipBindingHandler',
     'bootstrapping/knockoutBindings/downloadAsPdfBinding',
     'bootstrapping/knockoutBindings/mediaPlayerBinding',

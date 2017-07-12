@@ -1,2 +1,2 @@
 CALL npm install
-CALL gulp build
+CALL node node_modules/gulp/bin/gulp build

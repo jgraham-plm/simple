@@ -1,8 +1,12 @@
 ﻿<section class="overlay-wrapper">
-    <!-- ko if: content -->
-    <div class="question-content-wrapper">
-        <div class="question-content styled-content" data-bind="html: content, elementsWrap: {}"></div>
-    </div>
+    <!-- ko if: questionInstructions.length > 0 -->
+    <section id="question-instructions" class="question-instructions" data-animate="">
+        <ul class="question-instruction-items unstyled">
+            <!-- ko foreach: questionInstructions-->
+            <li class="question-instruction-item styled-content" data-bind="contentBlock: content"></li>
+            <!-- /ko -->
+        </ul>
+    </section>
     <!-- /ko -->
     <div class="edit-field-wrapper">
         <textarea class="open-question-edit-field edit-field selectable" data-bind="textArea: answeredText, attr:{ disabled: isAnswered }, keyDown: {37: {preventDefault: false}, 39: {preventDefault: false}}" data-translate-placeholder="[type your answer here]"></textarea>

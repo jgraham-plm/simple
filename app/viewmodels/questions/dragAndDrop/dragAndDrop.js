@@ -3,7 +3,7 @@ define(function () {
 
     function DragAndDrop() {
         this.question = null;
-	    this.content = null;
+        this.questionInstructions = [];
 
         this.dropspots = [];
         this.texts = [];
@@ -55,7 +55,7 @@ define(function () {
         
         return Q.fcall(function () {
             self.question = question;
-            self.content = question.content;
+            self.questionInstructions = question.questionInstructions;
             self.isPreview(_.isUndefined(isPreview) ? false : isPreview);
 
             self.isAnswered(question.isAnswered);

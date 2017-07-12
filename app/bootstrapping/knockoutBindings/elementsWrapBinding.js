@@ -17,10 +17,16 @@
 
         $('img', $element).each(function (index, image) {
             var $image = $(image),
-                $wrapper = $(imageWrapper).css('float', $image[0].style.cssFloat);
+                $wrapper = $(imageWrapper).css('float', $image[0].style.cssFloat),
+                $parent = $image.parent();
 
-            if ($image.closest('.cropped-image').length > 0) {
+            if ($image.closest('.cropped-image').length > 0 || $parent.hasClass('image-wrapper')) {
                 return;
+            }
+
+            if ($parent.prop('tagName') == "TD" && $parent[0].style.width == "") {
+                $wrapper.css('width', $image[0].style.width);
+                $wrapper.css('height', $image[0].style.height);
             }
 
             // moved to css, because of IE11 crash on Windows 10 => .image-wrapper img {height:auto!important;float:none!important;}

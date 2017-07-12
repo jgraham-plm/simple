@@ -3,7 +3,7 @@
 
     function RankingText() {
         this.question = null;
-        this.content = null;
+        this.questionInstructions = [];
 
         this.isAnswered = ko.observable(false);
         this.rankingItems = ko.observableArray([]);
@@ -15,7 +15,7 @@
         return Q.fcall(function () {
             self.question = question;
 
-            self.content = question.content;
+            self.questionInstructions = question.questionInstructions;
             self.isAnswered(question.isAnswered);
 
             self.rankingItems(question.rankingItems);

@@ -1,10 +1,10 @@
 define(['durandal/composition', 'helpers/documentBlock'], function (composition, documentBlockHelper) {
-    ko.bindingHandlers.learningContent = {
+    ko.bindingHandlers.contentBlock = {
         init: function (element, valueAccessor) {
             var $element = $(element),
                 html = valueAccessor();
             
-            var dataType = getLearningContentType(html);
+            var dataType = getContentBlockType(html);
             
             switch(dataType){
                 case 'hotspot': {
@@ -32,9 +32,9 @@ define(['durandal/composition', 'helpers/documentBlock'], function (composition,
         }
     };
     
-    composition.addBindingHandler('learningContent');
+    composition.addBindingHandler('contentBlock');
     
-    function getLearningContentType(data) {
+    function getContentBlockType(data) {
         var $output = $('<output>').html(data),
             dataType = $('[data-type]', $output).attr('data-type');
         

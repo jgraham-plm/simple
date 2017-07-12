@@ -7,7 +7,6 @@
 			$(element).css('touch-action','none');
             $(element).draggable({
                 appendTo: '.application-wrapper',
-                containment: '.application-wrapper',
                 helper: function () {
                     return $(element)
                         .clone()
