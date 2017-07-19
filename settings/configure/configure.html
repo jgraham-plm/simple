@@ -72,8 +72,9 @@
                                 </div>
                             </div>
                             <div class="preview-disabled" data-bind="visible: !allowCrossDeviceSaving()"></div>
-                        </div>
-                         <div class="settings-row">
+                        </div>                        
+                        <!-- ko if: allowxApiSettings -->
+                        <div class="settings-row">
                             <div class="settings-caption">
                                 <div data-bind="localize: 'conduct learner satisfaction survey'"></div>
                             </div>
@@ -91,6 +92,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- /ko -->
                         <div class="settings-row">
                             <div class="settings-caption" data-bind="localize: 'pdf export'"></div>
                             <div class="settings-content">
@@ -108,14 +110,15 @@
                             <div class="settings-content setting-input-wrapper">
                                 <input type="text" class="settings-input" autocomplete="off" placeholder="Copyright © 2017 Easygenerator" data-bind="value: copyright, valueUpdate: 'afterkeydown', event: { blur: saveChanges }" />
                             </div>
-                        </div>
+                        </div>        
                     </div>
                 </div>
             </div>
             <div class="settings-tab-container track-and-trace" data-tab="track-and-trace">
                 <div class="settings-section" data-bind="with: trackingData">
                     <h1 class="section-header" data-bind="localize: 'track and trace settings'"></h1>
-                    <div class="section-content">
+                    <div class="section-content"> 
+                        <!-- ko if: $root.allowxApiSettings -->
                         <div class="settings-row">
                             <div class="settings-caption">
                                 <div data-bind="localize: 'results tracking option'"></div>
@@ -152,6 +155,7 @@
                             </div>
                             <div class="preview-disabled" data-bind="visible: !enableXAPI()"></div>
                         </div>
+                        <!-- /ko -->
                         <div class="settings-row">
                             <div class="settings-caption">
                                 <div data-bind="localize: 'show confirmation popup'"></div>
@@ -189,6 +193,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- ko if: $root.allowxApiSettings -->
                         <div class="advanced-settings">
                             <div class="advanced-settings-title-container" data-bind="click: toggleAdvancedSettings">
                                 <div class="advanced-settings-title" data-bind="css: { expanded: advancedSettingsExpanded(),  collapsed: !advancedSettingsExpanded() }, localize: 'advanced settings'"></div>
@@ -329,6 +334,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- /ko -->
                     </div>
                 </div>
                 <div class="settings-section">

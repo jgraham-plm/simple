@@ -16,6 +16,7 @@
         allowContentPagesScoring: ko.observable(false),
         allowCrossDeviceSaving: ko.observable(true),
         allowSocialLogin: ko.observable(true),
+        allowxApiSettings: ko.observable(true),
         copyright: ko.observable('')
     };
 
@@ -30,6 +31,7 @@
             allowContentPagesScoring: viewModel.allowContentPagesScoring(),
             allowCrossDeviceSaving: viewModel.allowCrossDeviceSaving(),
             allowLoginViaSocialMedia: viewModel.allowSocialLogin(),
+            allowxApiSettings: viewModel.allowxApiSettings(),
             copyright: viewModel.copyright()
         });
     };
@@ -92,6 +94,12 @@
                 viewModel.allowSocialLogin(settings.allowLoginViaSocialMedia);
             } else if (defaultTemplateSettings.hasOwnProperty('allowLoginViaSocialMedia')) {
                 viewModel.allowSocialLogin(defaultTemplateSettings.allowLoginViaSocialMedia);
+            }
+            
+            if (settings.hasOwnProperty('allowxApiSettings')) {
+                viewModel.allowxApiSettings(settings.allowxApiSettings);
+            } else if (defaultTemplateSettings.hasOwnProperty('allowxApiSettings')) {
+                viewModel.allowxApiSettings(defaultTemplateSettings.allowxApiSettings);
             }
 
             if (settings.hasOwnProperty('copyright')) {

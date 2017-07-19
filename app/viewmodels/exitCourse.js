@@ -7,6 +7,7 @@
     "use strict";
 
     var progressStatuses = constants.progressContext.statuses;
+    var course = courseRepository.get();
 
     var statuses = {
         readyToFinish: 'readyToFinish',
@@ -71,7 +72,9 @@
             progressContext.status(progressStatuses.ignored);
         }
 
-        windowOperations.close();
+        course.finalize(function() {
+            windowOperations.close();
+        });
     }
 
 });

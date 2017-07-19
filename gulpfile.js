@@ -82,31 +82,6 @@ gulp.task('clean', function (cb) {
     del([output], cb);
 });
 
-function addCustomStyles() {
-    return eventStream.map(function (file, callback) {
-        var customStyles = [
-            'css/custom-styles.css'
-        ];
-
-        var fileContent = String(file.contents);
-
-        customStyles.forEach(function(extraStyle){
-            if(fs.existsSync(extraStyle)) {
-                gulp.src(extraStyle)
-                    .pipe(addBuildVersion())
-                    .pipe(gulp.dest(output + '/css'));
-                fileContent = fileContent
-                    .replace(/<!-- custom-styles -->((.|\s)*?)<!-- endinject -->/gi, '<!-- custom-styles -->$1' + '<link href="'+ extraStyle +'" rel="stylesheet" />\n<!-- endinject -->')
-            }
-        });
-
-        fileContent = fileContent
-                    .replace(/<!-- custom-styles -->\s((.|\s)*?)\s<!-- endinject -->/gi, '$1');
-                    file.contents = new Buffer(fileContent);
-        callback(null, file);
-    });
-};
-
 gulp.task('bower', ['clean'], function () {
     return bower({ cmd: 'update' });
 });
@@ -125,7 +100,6 @@ gulp.task('build-app', ['pre-build'], function () {
     var assets = useref.assets();
 
     gulp.src('index.html')
-        .pipe(addCustomStyles())
         .pipe(assets)
         .pipe(gulpif('*.js', uglify()))
         .pipe(gulpif('*.css', cleanCSS()))

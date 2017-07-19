@@ -931,6 +931,7 @@
         "showConfirmationPopup": true,
         "allowContentPagesScoring": false,
         "allowCrossDeviceSaving": true,
-        "allowLoginViaSocialMedia": true
+        "allowLoginViaSocialMedia": true,
+        "allowxApiSettings": true
     }
 }
